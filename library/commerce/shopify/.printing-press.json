@@ -1,18 +1,20 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-02T03:53:03.774005Z",
-  "printing_press_version": "3.2.1",
+  "generated_at": "2026-05-15T11:07:30.036764Z",
+  "printing_press_version": "4.6.1",
   "api_name": "shopify",
   "display_name": "Shopify",
   "cli_name": "shopify-pp-cli",
-  "owner": "user",
-  "printer": "cathrynlavery",
-  "printer_name": "Cathryn Lavery",
-  "spec_path": "catalog/specs/shopify-2026-04-wrapper.yaml",
+  "owner": "benjamin-huang",
+  "printer_name": "Benjamin Huang",
+  "spec_path": "/Users/benjaminhuang/printing-press/library/shopify/spec.yaml",
   "spec_format": "internal",
-  "spec_checksum": "sha256:4e5ca1c0c251eed7ac5fce5c7bcf974c584bcdea07ffb495eb6c5dd37fe00d69",
+  "spec_checksum": "sha256:7bfc2ce208f6f85e21949cc1f0a4045d4f121b36153efe09b3d4736265a01207",
+  "run_id": "20260515-174628",
+  "category": "commerce",
+  "description": "Operate a Shopify store from the terminal with local sync, analytics, and bulk exports.",
   "mcp_binary": "shopify-pp-mcp",
-  "mcp_tool_count": 10,
+  "mcp_tool_count": 12,
   "mcp_ready": "full",
   "api_version": "2026-04",
   "auth_type": "api_key",
@@ -23,12 +25,5 @@
     "shop",
     "api_version"
   ],
-  "auth_key_url": "https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens",
-  "novel_features": [
-    {
-      "name": "Bulk operation runner",
-      "command": "bulk-operations",
-      "description": "Inspect the current Shopify bulk operation and launch bulk GraphQL export jobs from query text or a query file."
-    }
-  ]
+  "auth_key_url": "https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens"
 }

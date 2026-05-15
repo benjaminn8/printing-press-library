@@ -67,7 +67,7 @@ func newBulkOperationsCurrentCmd(flags *rootFlags) *cobra.Command {
 				data, err = extractGraphQLObject(data, "currentBulkOperation")
 			}
 			if err != nil {
-				return classifyAPIError(err)
+				return classifyAPIError(err, flags)
 			}
 			return printOutputWithFlags(cmd.OutOrStdout(), data, flags)
 		},
@@ -110,7 +110,7 @@ func newBulkOperationsRunQueryCmd(flags *rootFlags) *cobra.Command {
 				data, err = extractGraphQLObject(data, "bulkOperationRunQuery")
 			}
 			if err != nil {
-				return classifyAPIError(err)
+				return classifyAPIError(err, flags)
 			}
 			return printOutputWithFlags(cmd.OutOrStdout(), data, flags)
 		},
