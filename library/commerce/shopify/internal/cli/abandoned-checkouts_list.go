@@ -37,6 +37,9 @@ func newAbandonedCheckoutsListCmd(flags *rootFlags) *cobra.Command {
 			if flagAfter != "" {
 				variables["after"] = flagAfter
 			}
+			if flagQuery != "" {
+				variables["query"] = flagQuery
+			}
 			var data json.RawMessage
 			if flagAll && !flags.dryRun {
 				var items []json.RawMessage
