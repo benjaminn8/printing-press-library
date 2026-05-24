@@ -11,6 +11,7 @@ func newInventoryItemsCmd(flags *rootFlags) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "inventory-items",
 		Short: "Shopify inventory items with tracked status and available quantities by location.",
+		RunE:  parentNoSubcommandRunE(flags),
 	}
 
 	cmd.AddCommand(newInventoryItemsGetCmd(flags))

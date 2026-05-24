@@ -9,7 +9,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"shopify-pp-cli/internal/client"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/client"
 )
 
 func newInventoryItemsListCmd(flags *rootFlags) *cobra.Command {
@@ -43,12 +43,12 @@ func newInventoryItemsListCmd(flags *rootFlags) *cobra.Command {
 			var data json.RawMessage
 			if flagAll && !flags.dryRun {
 				var items []json.RawMessage
-				items, err = c.PaginatedQuery(client.InventoryItemsListQuery, variables, "inventoryItems", flagFirst)
+				items, err = c.PaginatedQuery(cmd.Context(), client.InventoryItemsListQuery, variables, "inventoryItems", flagFirst)
 				if err == nil {
 					data, err = json.Marshal(items)
 				}
 			} else {
-				data, err = c.Query(client.InventoryItemsListQuery, variables)
+				data, err = c.Query(cmd.Context(), client.InventoryItemsListQuery, variables)
 				if err == nil && !flags.dryRun {
 					data, err = extractGraphQLConnection(data, "inventoryItems")
 				}
@@ -103,7 +103,7 @@ func newInventoryItemsListCmd(flags *rootFlags) *cobra.Command {
 	}
 	cmd.Flags().IntVar(&flagFirst, "first", 100, "Page size for Shopify cursor pagination.")
 	cmd.Flags().StringVar(&flagAfter, "after", "", "Cursor for the next page.")
-	cmd.Flags().StringVar(&flagQuery, "query", "", "Shopify search-syntax filter (e.g. 'updated_at:>=2025-01-01'). Used by --since to fetch only data updated within the...")
+	cmd.Flags().StringVar(&flagQuery, "query", "", "Shopify search-syntax filter (e.g. 'updated_at:>=2025-01-01').")
 	cmd.Flags().BoolVar(&flagAll, "all", false, "Fetch all pages")
 
 	return cmd

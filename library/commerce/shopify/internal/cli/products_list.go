@@ -9,7 +9,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"shopify-pp-cli/internal/client"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/client"
 )
 
 func newProductsListCmd(flags *rootFlags) *cobra.Command {
@@ -43,12 +43,12 @@ func newProductsListCmd(flags *rootFlags) *cobra.Command {
 			var data json.RawMessage
 			if flagAll && !flags.dryRun {
 				var items []json.RawMessage
-				items, err = c.PaginatedQuery(client.ProductsListQuery, variables, "products", flagFirst)
+				items, err = c.PaginatedQuery(cmd.Context(), client.ProductsListQuery, variables, "products", flagFirst)
 				if err == nil {
 					data, err = json.Marshal(items)
 				}
 			} else {
-				data, err = c.Query(client.ProductsListQuery, variables)
+				data, err = c.Query(cmd.Context(), client.ProductsListQuery, variables)
 				if err == nil && !flags.dryRun {
 					data, err = extractGraphQLConnection(data, "products")
 				}
@@ -103,7 +103,7 @@ func newProductsListCmd(flags *rootFlags) *cobra.Command {
 	}
 	cmd.Flags().IntVar(&flagFirst, "first", 100, "Page size for Shopify cursor pagination.")
 	cmd.Flags().StringVar(&flagAfter, "after", "", "Cursor for the next page.")
-	cmd.Flags().StringVar(&flagQuery, "query", "", "Shopify search-syntax filter (e.g. 'updated_at:>=2025-01-01'). Used by --since to fetch only data updated within the...")
+	cmd.Flags().StringVar(&flagQuery, "query", "", "Shopify search-syntax filter (e.g. 'updated_at:>=2025-01-01').")
 	cmd.Flags().BoolVar(&flagAll, "all", false, "Fetch all pages")
 
 	return cmd

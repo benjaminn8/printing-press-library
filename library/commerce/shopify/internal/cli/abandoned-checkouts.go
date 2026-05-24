@@ -11,6 +11,7 @@ func newAbandonedCheckoutsCmd(flags *rootFlags) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "abandoned-checkouts",
 		Short: "Shopify abandoned checkouts for recovery campaigns and lost-cart analysis.",
+		RunE:  parentNoSubcommandRunE(flags),
 	}
 
 	cmd.AddCommand(newAbandonedCheckoutsGetCmd(flags))

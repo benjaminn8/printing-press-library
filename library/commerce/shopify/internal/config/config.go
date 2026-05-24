@@ -86,6 +86,9 @@ func Load(configPath string) (*Config, error) {
 	// the printing-press verifier in every mock subprocess), an unset
 	// template var falls through to "<name>_placeholder" so dry-run legs
 	// reach Cobra instead of hitting buildURL's actionable error first.
+	// Placeholders with a spec-declared default (server-URL variables) skip
+	// the verify branch; the default is a real value that lets verify probe
+	// a real-shaped URL.
 	if cfg.TemplateVars == nil {
 		cfg.TemplateVars = map[string]string{}
 	}
@@ -155,9 +158,18 @@ func (c *Config) SaveCredential(token string) error {
 }
 
 func (c *Config) ClearTokens() error {
+	// AuthHeader() falls back to the env-var-derived fields when AuthHeaderVal
+	// and AccessToken are empty, so dropping the working credential requires
+	// zeroing every emitted credential field, not just the OAuth trio.
+	// ClientID/ClientSecret persist to disk via SaveTokens for the oauth2
+	// and oauth2-cc flows, so logout must wipe them too; otherwise
+	// `auth login` can re-mint a new access token unattended.
+	c.AuthHeaderVal = ""
 	c.AccessToken = ""
 	c.RefreshToken = ""
 	c.TokenExpiry = time.Time{}
+	c.ClientID = ""
+	c.ClientSecret = ""
 	return c.save()
 }
 

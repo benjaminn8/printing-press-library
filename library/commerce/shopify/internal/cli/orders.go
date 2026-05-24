@@ -11,6 +11,7 @@ func newOrdersCmd(flags *rootFlags) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "orders",
 		Short: "Shopify orders with money totals, financial state, and fulfillment state.",
+		RunE:  parentNoSubcommandRunE(flags),
 	}
 
 	cmd.AddCommand(newOrdersGetCmd(flags))

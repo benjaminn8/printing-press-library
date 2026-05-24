@@ -97,7 +97,7 @@ func newTagsMutationCmd(flags *rootFlags, resource, parent, verb, mutation, payl
 				"id":   resourceGID(id, resource),
 				"tags": tags,
 			}
-			data, err := c.Mutate(mutation, vars)
+			data, err := c.Mutate(cmd.Context(), mutation, vars)
 			if err == nil && !flags.dryRun {
 				data, err = extractGraphQLObject(data, payloadField)
 			}

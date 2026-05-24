@@ -9,14 +9,15 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
-	"shopify-pp-cli/internal/cliutil"
-	"shopify-pp-cli/internal/config"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/cliutil"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/config"
 )
 
 func newAuthCmd(flags *rootFlags) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "auth",
 		Short: "Manage authentication for Shopify",
+		RunE:  parentNoSubcommandRunE(flags),
 	}
 
 	cmd.AddCommand(newAuthSetupCmd(flags))

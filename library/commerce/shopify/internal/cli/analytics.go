@@ -10,7 +10,7 @@ import (
 	"sort"
 
 	"github.com/spf13/cobra"
-	"shopify-pp-cli/internal/store"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/store"
 )
 
 func newAnalyticsCmd(flags *rootFlags) *cobra.Command {
@@ -43,6 +43,8 @@ Data must be synced first with the sync command.`,
 				return fmt.Errorf("opening local database: %w\nRun 'shopify-pp-cli sync' first.", err)
 			}
 			defer db.Close()
+
+			maybeEmitSyncHints(cmd, db, resourceType, flags.maxAge)
 
 			if resourceType == "" {
 				// Show summary of all resource types

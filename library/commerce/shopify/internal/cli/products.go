@@ -11,6 +11,7 @@ func newProductsCmd(flags *rootFlags) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "products",
 		Short: "Shopify products with product status, catalog metadata, and a compact variant inventory projection.",
+		RunE:  parentNoSubcommandRunE(flags),
 	}
 
 	cmd.AddCommand(newProductsGetCmd(flags))

@@ -11,6 +11,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"hash/fnv"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -823,15 +824,11 @@ func extractObjectID(obj map[string]any) string {
 // modernc.org/sqlite's FTS5 implementation may not support DELETE WHERE column=?
 // on virtual tables, so we use explicit rowids and DELETE WHERE rowid=? instead.
 func ftsRowID(scope, id string) int64 {
-	var h uint64
-	for _, c := range scope {
-		h = h*31 + uint64(c)
-	}
-	h *= 31
-	for _, c := range id {
-		h = h*31 + uint64(c)
-	}
-	return int64(h & 0x7FFFFFFFFFFFFFFF) // ensure positive
+	h := fnv.New64a()
+	_, _ = h.Write([]byte(scope))
+	_, _ = h.Write([]byte{0}) // separator so ("ab","c") != ("a","bc")
+	_, _ = h.Write([]byte(id))
+	return int64(h.Sum64() & 0x7FFFFFFFFFFFFFFF) // ensure positive
 }
 
 // LookupFieldValue resolves a field value from a JSON object map, trying the
@@ -1232,22 +1229,56 @@ var resourceIDFieldOverrides = map[string]string{}
 
 // genericIDFieldFallbacks is the runtime safety net for resources that did
 // NOT receive a templated IDField. API-specific names belong in spec
-// annotations (x-resource-id), not this list.
-var genericIDFieldFallbacks = []string{"id", "ID", "name", "uuid", "slug", "key", "code", "uid"}
+// annotations (x-resource-id), not this list. Order matters: vendor
+// identifier names (gid, sid, uid, uuid, guid) take precedence over `name`
+// so APIs like Asana (gid) and Twilio (sid) don't fall through to a display
+// field and upsert on names — see #1394.
+var genericIDFieldFallbacks = []string{"id", "ID", "gid", "sid", "uid", "uuid", "guid", "name", "slug", "key", "code"}
+
+// ExtractResourceID resolves the primary key UpsertBatch would use for a
+// resource item. Callers that need to gate best-effort writes can use this to
+// avoid passing non-entity envelopes into the batch path.
+func ExtractResourceID(resourceType string, obj map[string]any) string {
+	if override, ok := resourceIDFieldOverrides[resourceType]; ok && override != "" {
+		if v := lookupFieldValue(obj, override); v != nil {
+			s := fmt.Sprintf("%v", v)
+			if s != "" && s != "<nil>" {
+				return s
+			}
+		}
+	}
+	for _, key := range genericIDFieldFallbacks {
+		if v := lookupFieldValue(obj, key); v != nil {
+			s := fmt.Sprintf("%v", v)
+			if s != "" && s != "<nil>" {
+				return s
+			}
+		}
+	}
+	return ""
+}
 
 // UpsertBatch inserts or replaces multiple records in a single transaction
-// and returns (stored, extractFailures, err). stored counts rows actually
-// landed; extractFailures counts items that survived JSON unmarshal but had
-// no extractable primary key (templated IDField AND generic fallback both
-// missed). callers (sync.go.tmpl) compare these against len(items) to emit
-// the per-item primary_key_unresolved warning and the F4b
-// stored_count_zero_after_extraction probe.
+// and returns (stored, extractFailures, err). stored counts rows landed in
+// the generic resources table; extractFailures counts items that survived
+// JSON unmarshal but had no extractable primary key (templated IDField AND
+// generic fallback both missed). callers (sync.go.tmpl) compare these
+// against len(items) to emit the per-item primary_key_unresolved warning
+// and the F4b stored_count_zero_after_extraction probe.
 //
 // For resource types that have a domain-specific typed table, the per-item
 // generic insert is followed by a dispatch to the matching upsert<Pascal>Tx
 // inside the same transaction. Without that dispatch, paginated syncs would
 // only populate the generic resources table — typed tables (and indexed
 // columns like parent_id added by dependent-resource sync) would stay empty.
+//
+// Each typed-table dispatch runs inside a per-item SAVEPOINT so a constraint
+// failure in the typed insert (e.g. NOT NULL parent FK when the generator
+// didn't populate the parent path placeholder) rolls back only that typed
+// upsert. The generic resources row inserted just above it survives the
+// rollback, so successful API fetches never strand in memory because one
+// downstream typed table is misconfigured. Failures are surfaced via a
+// trailing stderr warning rather than aborting the batch.
 func (s *Store) UpsertBatch(resourceType string, items []json.RawMessage) (int, int, error) {
 	s.writeMu.Lock()
 	defer s.writeMu.Unlock()
@@ -1257,8 +1288,8 @@ func (s *Store) UpsertBatch(resourceType string, items []json.RawMessage) (int, 
 	}
 	defer tx.Rollback()
 
-	var stored, skippedCount, extractFailures int
-	for _, item := range items {
+	var stored, skippedCount, extractFailures, typedFailures int
+	for i, item := range items {
 		var obj map[string]any
 		if err := json.Unmarshal(item, &obj); err != nil {
 			skippedCount++
@@ -1268,26 +1299,7 @@ func (s *Store) UpsertBatch(resourceType string, items []json.RawMessage) (int, 
 		// the override is empty OR the override field is absent on this
 		// particular item (response shape mismatches happen even when the
 		// spec declares x-resource-id).
-		var id string
-		if override, ok := resourceIDFieldOverrides[resourceType]; ok && override != "" {
-			if v := lookupFieldValue(obj, override); v != nil {
-				s := fmt.Sprintf("%v", v)
-				if s != "" && s != "<nil>" {
-					id = s
-				}
-			}
-		}
-		if id == "" {
-			for _, key := range genericIDFieldFallbacks {
-				if v := lookupFieldValue(obj, key); v != nil {
-					s := fmt.Sprintf("%v", v)
-					if s != "" && s != "<nil>" {
-						id = s
-						break
-					}
-				}
-			}
-		}
+		id := ExtractResourceID(resourceType, obj)
 		if id == "" {
 			skippedCount++
 			extractFailures++
@@ -1295,42 +1307,58 @@ func (s *Store) UpsertBatch(resourceType string, items []json.RawMessage) (int, 
 		}
 
 		if err := s.upsertGenericResourceTx(tx, resourceType, id, item); err != nil {
-			return 0, extractFailures, fmt.Errorf("upserting %s/%s: %w", resourceType, id, err)
-		}
-
-		switch resourceType {
-		case "abandoned-checkouts":
-			if err := s.upsertAbandonedCheckoutsTx(tx, id, obj, item); err != nil {
-				return 0, extractFailures, fmt.Errorf("typed upsert for %s/%s: %w", resourceType, id, err)
-			}
-		case "customers":
-			if err := s.upsertCustomersTx(tx, id, obj, item); err != nil {
-				return 0, extractFailures, fmt.Errorf("typed upsert for %s/%s: %w", resourceType, id, err)
-			}
-		case "fulfillment-orders":
-			if err := s.upsertFulfillmentOrdersTx(tx, id, obj, item); err != nil {
-				return 0, extractFailures, fmt.Errorf("typed upsert for %s/%s: %w", resourceType, id, err)
-			}
-		case "inventory-items":
-			if err := s.upsertInventoryItemsTx(tx, id, obj, item); err != nil {
-				return 0, extractFailures, fmt.Errorf("typed upsert for %s/%s: %w", resourceType, id, err)
-			}
-		case "orders":
-			if err := s.upsertOrdersTx(tx, id, obj, item); err != nil {
-				return 0, extractFailures, fmt.Errorf("typed upsert for %s/%s: %w", resourceType, id, err)
-			}
-		case "products":
-			if err := s.upsertProductsTx(tx, id, obj, item); err != nil {
-				return 0, extractFailures, fmt.Errorf("typed upsert for %s/%s: %w", resourceType, id, err)
-			}
+			// Return the running stored count rather than zero so callers
+			// inspecting partial progress on failure see what already
+			// landed in earlier loop iterations.
+			return stored, extractFailures, fmt.Errorf("upserting %s/%s: %w", resourceType, id, err)
 		}
 		stored++
+
+		savepoint := fmt.Sprintf("pp_typed_%d", i)
+		if _, err := tx.Exec("SAVEPOINT " + savepoint); err != nil {
+			return stored, extractFailures, fmt.Errorf("savepoint begin for %s/%s: %w", resourceType, id, err)
+		}
+
+		var typedErr error
+		switch resourceType {
+		case "abandoned-checkouts":
+			typedErr = s.upsertAbandonedCheckoutsTx(tx, id, obj, item)
+		case "customers":
+			typedErr = s.upsertCustomersTx(tx, id, obj, item)
+		case "fulfillment-orders":
+			typedErr = s.upsertFulfillmentOrdersTx(tx, id, obj, item)
+		case "inventory-items":
+			typedErr = s.upsertInventoryItemsTx(tx, id, obj, item)
+		case "orders":
+			typedErr = s.upsertOrdersTx(tx, id, obj, item)
+		case "products":
+			typedErr = s.upsertProductsTx(tx, id, obj, item)
+		}
+
+		if typedErr != nil {
+			if _, rbErr := tx.Exec("ROLLBACK TO SAVEPOINT " + savepoint); rbErr != nil {
+				return stored, extractFailures, fmt.Errorf("rollback to savepoint for %s/%s (typed err: %v): %w", resourceType, id, typedErr, rbErr)
+			}
+			if _, relErr := tx.Exec("RELEASE SAVEPOINT " + savepoint); relErr != nil {
+				return stored, extractFailures, fmt.Errorf("release savepoint after rollback for %s/%s: %w", resourceType, id, relErr)
+			}
+			typedFailures++
+			continue
+		}
+		if _, err := tx.Exec("RELEASE SAVEPOINT " + savepoint); err != nil {
+			return stored, extractFailures, fmt.Errorf("release savepoint for %s/%s: %w", resourceType, id, err)
+		}
 	}
 
 	// Warn when most items in a batch lack an extractable ID — this likely
 	// means the API uses a primary key field we don't recognize yet.
 	if skippedCount > 0 && len(items) > 0 && skippedCount*2 > len(items) {
 		fmt.Fprintf(os.Stderr, "warning: %d/%d %s items skipped (no extractable ID field found)\n", skippedCount, len(items), resourceType)
+	}
+	// Surface typed-table failures without aborting the batch. Generic rows
+	// already committed; only the typed projection failed.
+	if typedFailures > 0 {
+		fmt.Fprintf(os.Stderr, "warning: %d/%d %s items: typed-table upsert failed; generic resources rows preserved\n", typedFailures, len(items), resourceType)
 	}
 
 	if err := tx.Commit(); err != nil {

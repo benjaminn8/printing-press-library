@@ -35,7 +35,7 @@ func runShopifyql(cmd *cobra.Command, flags *rootFlags, query string) error {
 	if err != nil {
 		return err
 	}
-	data, err := c.Query(shopifyqlQueryMutation, map[string]any{"query": query})
+	data, err := c.Query(cmd.Context(), shopifyqlQueryMutation, map[string]any{"query": query})
 	if err == nil && !flags.dryRun {
 		data, err = extractGraphQLObject(data, "shopifyqlQuery")
 	}
@@ -155,7 +155,7 @@ func runShopifyqlFunnel(cmd *cobra.Command, flags *rootFlags, days int) error {
 
 	// 1. Sessions - live ShopifyQL call (no BY clause = single aggregate row)
 	sessQuery := fmt.Sprintf("SHOW sessions FROM sessions %s", daysClause(days))
-	sessRaw, err := c.Query(shopifyqlQueryMutation, map[string]any{"query": sessQuery})
+	sessRaw, err := c.Query(cmd.Context(), shopifyqlQueryMutation, map[string]any{"query": sessQuery})
 	if err != nil {
 		return classifyAPIError(err, flags)
 	}

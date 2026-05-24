@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"shopify-pp-cli/internal/store"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/store"
 )
 
 // Compound analytics commands. All read from the local SQLite store populated

@@ -9,13 +9,14 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"shopify-pp-cli/internal/store"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/store"
 )
 
 func newWorkflowCmd(flags *rootFlags) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "workflow",
 		Short: "Compound workflows that combine multiple API operations",
+		RunE:  parentNoSubcommandRunE(flags),
 	}
 	cmd.AddCommand(newWorkflowArchiveCmd(flags))
 	cmd.AddCommand(newWorkflowStatusCmd(flags))
@@ -66,7 +67,7 @@ and full resync. After archiving, use 'search' for instant full-text search.`,
 			}
 
 			for _, resource := range resources {
-				res := syncResource(c, s, resource, "", full, 100)
+				res := syncResource(cmd.Context(), c, s, resource, "", full, 100)
 				if res.Err != nil {
 					fmt.Fprintf(cmd.ErrOrStderr(), "  %s: error: %v\n", resource, res.Err)
 					continue

@@ -11,6 +11,7 @@ func newCustomersCmd(flags *rootFlags) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "customers",
 		Short: "Shopify customers with lifetime order count, lifetime spend, and contact fields.",
+		RunE:  parentNoSubcommandRunE(flags),
 	}
 
 	cmd.AddCommand(newCustomersGetCmd(flags))

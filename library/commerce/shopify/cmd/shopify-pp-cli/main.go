@@ -4,15 +4,13 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
-	"shopify-pp-cli/internal/cli"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/cli"
 )
 
 func main() {
 	if err := cli.Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err.Error())
 		os.Exit(cli.ExitCode(err))
 	}
 }
