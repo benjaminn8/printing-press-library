@@ -6,7 +6,7 @@ Companion to `ABSORB-MANIFEST.md`. Tracks where the patched binary is deployed, 
 
 This is the fork `benjaminn8/printing-press-library` (parent: `mvanhorn/printing-press-library`). It carries the 5-bug patch set applied after a v4.6.1 factory reprint on 2026-05-16. Source of truth for any Shopify PP CLI binary running in this org.
 
-Latest patch commit: `580ec6e` (`docs(shopify): add bug #5 (--query dead-flag) to ABSORB-MANIFEST`).
+Latest commit: `0d45795d` (`docs(shopify): add DEPLOYMENT.md tracking fork-deployed binaries`, 2026-05-24). Latest code patch: `580ec6e`.
 
 ## Patches (full reference)
 
@@ -24,14 +24,19 @@ Bug #1 is library-side and belongs in any PR to upstream. Bugs #2, #3, #5 are ge
 
 ## Known deployments
 
-| Host | Path | Arch | Built | Source |
-|---|---|---|---|---|
-| iMac (Hermes-Mimi profile, dev) | `~/go/bin/shopify-pp-cli` | darwin/arm64 | 2026-05-16 | local "devel" tree, now deleted |
-| hosted_hermes (Atlas client VPS bundle) | `~/claudecode_demo/hosted_hermes/infra/bin/shopify-pp-cli-linux-amd64` | linux/amd64 | 2026-05-20 | this fork at commit `580ec6e` |
+| Host | Path | Arch | Built | Source | VCS rev |
+|---|---|---|---|---|---|
+| Air | `~/.local/bin/shopify-pp-cli` → `~/go/bin/shopify-pp-cli` | darwin/arm64 | 2026-05-24 | fork clone at `~/claudecode_demo/printing-press-library` | `0d45795d` |
+| iMac (Hermes-Mimi profile) | `~/.local/bin/shopify-pp-cli` → `~/go/bin/shopify-pp-cli` | darwin/arm64 | 2026-05-24 | fork clone at `~/code/printing-press-library` | `0d45795d` |
+| hosted_hermes (Atlas client VPS bundle) | `~/claudecode_demo/hosted_hermes/infra/bin/shopify-pp-cli-linux-amd64` | linux/amd64 | 2026-05-20 | fork at `580ec6e` (pre-DEPLOYMENT.md) | `580ec6e` |
 
-**Both deployments ship binary only.** No source on those hosts. The Go module cache entry at `~/go/pkg/mod/github.com/mvanhorn/printing-press-library` on the iMac is pristine upstream — NOT the source of any deployed binary. Build info on the iMac binary shows `mod shopify-pp-cli (devel)`, no VCS revision, confirming it was built from a now-deleted local tree.
+**Air and iMac convention:** `~/.local/bin/shopify-pp-cli` is a symlink to `~/go/bin/shopify-pp-cli`. Both machines have `~/.local/bin` on `$PATH` (not `~/go/bin`), so the symlink is what makes `go install` updates take effect without manual copying.
 
-This repo (the fork clone at `~/claudecode_demo/printing-press-library` on the Air) is the only surviving working tree.
+**Verifying which build is live:** `go version -m ~/go/bin/shopify-pp-cli | grep vcs.revision` prints the source commit. `vcs.modified=false` means it was built from clean committed source.
+
+**Version string is always "1.0.0" on local builds.** That's a hardcoded fallback in `internal/cli/root.go`. Real versions only get injected by goreleaser on official release builds. `--version` output is not a reliable identity check; use `vcs.revision` instead.
+
+**hosted_hermes still ships binary only.** No source on that host. The Linux binary at `~/claudecode_demo/hosted_hermes/infra/bin/shopify-pp-cli-linux-amd64` is pinned at commit `580ec6e` (before DEPLOYMENT.md was added). Rebuild via the cross-compile step in the "Rebuilding" section when patches change.
 
 ## Rebuilding
 
@@ -51,6 +56,37 @@ CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags='-s -w' \
 ```
 
 CGO required for the SQLite driver. Cross-compiling linux from darwin needs a cross toolchain (`brew install FiloSottile/musl-cross/musl-cross` or build on a Linux VM/container).
+
+### First-time setup on a fresh darwin host
+
+```bash
+git clone https://github.com/benjaminn8/printing-press-library.git ~/code/printing-press-library
+cd ~/code/printing-press-library/library/commerce/shopify
+go install ./cmd/shopify-pp-cli
+ln -sf ~/go/bin/shopify-pp-cli ~/.local/bin/shopify-pp-cli   # only if ~/.local/bin is on $PATH but ~/go/bin is not
+shopify-pp-cli --version
+go version -m $(which shopify-pp-cli) | grep vcs.revision    # should match origin/main
+```
+
+Clone path is convention only: Air uses `~/claudecode_demo/printing-press-library`, iMac uses `~/code/printing-press-library`. Match the existing host or pick anything.
+
+### Update workflow (after a fork patch)
+
+On either machine, after pushing a fix to `origin/main`:
+
+```bash
+cd <fork clone>/library/commerce/shopify
+git -C ../../.. pull
+go install ./cmd/shopify-pp-cli
+```
+
+The `~/.local/bin/shopify-pp-cli` symlink picks up the rebuild automatically. No need to touch the symlink again after first setup.
+
+To push the update to the iMac from the Air in one line:
+
+```bash
+ssh imac 'cd ~/code/printing-press-library && git pull && cd library/commerce/shopify && go install ./cmd/shopify-pp-cli'
+```
 
 ## Runtime requirements (any host)
 
