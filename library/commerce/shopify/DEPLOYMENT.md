@@ -106,6 +106,40 @@ Before pushing to `mvanhorn/printing-press-library`, run the pre-PR scrub from `
 
 Bug #1 (library-side) goes in the upstream library PR. Bugs #2/#3/#5 are factory-side — separate PRs against `mvanhorn/cli-printing-press`, using the patches applied here as the spec.
 
+## Post-reprint checklist
+
+Run this after the factory (`~/claudecode_demo/printing-press-factory`) opens a fresh upstream PR for shopify and mirrors the result back into this fork.
+
+1. **Rebuild Air binary.**
+   ```bash
+   cd ~/claudecode_demo/printing-press-library && git pull
+   cd library/commerce/shopify && go install ./cmd/shopify-pp-cli
+   ```
+2. **Rebuild iMac binary** (from the Air):
+   ```bash
+   ssh imac 'cd ~/code/printing-press-library && git pull && cd library/commerce/shopify && go install ./cmd/shopify-pp-cli'
+   ```
+3. **Smoke test on both machines:**
+   - `shopify-pp-cli sync orders --since 24h --query "test:1"` (exercises bugs #2 sync UTC + #5 --query wiring)
+   - `shopify-pp-cli shopifyql funnel --days 7` (exercises bug #1 funnel fix + novel command path)
+   - `go version -m $(which shopify-pp-cli) | grep vcs.revision` should match `origin/main` on the fork.
+4. **Cross-compile + redeploy hosted_hermes Linux binary.**
+   ```bash
+   cd ~/claudecode_demo/printing-press-library/library/commerce/shopify
+   CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags='-s -w' \
+     -o ~/claudecode_demo/hosted_hermes/infra/bin/shopify-pp-cli-linux-amd64 ./cmd/shopify-pp-cli
+   ```
+   Needs `brew install FiloSottile/musl-cross/musl-cross` for cross-toolchain. Push the new binary to each Atlas client VPS via the existing deploy path.
+5. **Update this file's "Known deployments" table** with the new vcs.revision and build dates. Commit + push.
+6. **Watch the upstream PR.**
+   - `gh pr view <PR#> --comments` — resolve every Greptile P0 and P1 before merge.
+   - If `Greptile policy gate` times out (common on large new-CLI prints), the workflow auto-posts `@greptileai review` after ~3 minutes. Don't preemptively tag.
+   - `verify-library-conventions.yml` hard-fails on missing manuscripts; if the factory session did its job, this passes.
+7. **Once upstream PR merges:**
+   - Your fork diverges from upstream only by fork-only files (`DEPLOYMENT.md`, `ABSORB-MANIFEST.md`) plus any incremental fixes you ship.
+   - `git fetch upstream && git merge upstream/main` periodically to stay caught up on the rest of the library.
+   - Track the 3 filed factory issues (`mvanhorn/cli-printing-press#2056` `--since` UTC, `#2057` `--max-pages` default, `#2058` `--query` wiring). Once any of them merges in the factory, the corresponding `.printing-press-patches.json` entry can be dropped on the next reprint.
+
 ## Cross-reference
 
 - Reprint handoff (full bug history, scrub script): `~/claudecode_demo/printing-press/HANDOFF.md`
