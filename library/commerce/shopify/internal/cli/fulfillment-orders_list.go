@@ -15,7 +15,6 @@ import (
 func newFulfillmentOrdersListCmd(flags *rootFlags) *cobra.Command {
 	var flagFirst int
 	var flagAfter string
-	var flagQuery string
 	var flagAll bool
 
 	cmd := &cobra.Command{
@@ -100,7 +99,7 @@ func newFulfillmentOrdersListCmd(flags *rootFlags) *cobra.Command {
 	}
 	cmd.Flags().IntVar(&flagFirst, "first", 100, "Page size for Shopify cursor pagination.")
 	cmd.Flags().StringVar(&flagAfter, "after", "", "Cursor for the next page.")
-	cmd.Flags().StringVar(&flagQuery, "query", "", "Shopify search-syntax filter (e.g. 'updated_at:>=2025-01-01').")
+	// --query intentionally omitted: Shopify's fulfillmentOrders GraphQL field has no `query:` argument.
 	cmd.Flags().BoolVar(&flagAll, "all", false, "Fetch all pages")
 
 	return cmd
