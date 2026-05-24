@@ -1,7 +1,7 @@
 ---
 name: pp-shopify
 description: "Operate a Shopify store from the terminal with local sync, analytics, and bulk exports."
-author: "Benjamin Huang"
+author: "Cathryn Lavery"
 license: "Apache-2.0"
 argument-hint: "<command> [args] | install cli|mcp"
 allowed-tools: "Read Bash"
