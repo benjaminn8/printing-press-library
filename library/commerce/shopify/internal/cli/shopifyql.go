@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -224,10 +225,29 @@ func extractScalarSessions(raw json.RawMessage) (int, error) {
 			TableData struct {
 				Rows []map[string]json.RawMessage `json:"rows"`
 			} `json:"tableData"`
+			ParseErrors []struct {
+				Message string `json:"message"`
+				Code    string `json:"code"`
+			} `json:"parseErrors"`
 		} `json:"shopifyqlQuery"`
 	}
 	if err := json.Unmarshal(raw, &env); err != nil {
 		return 0, err
+	}
+	// ShopifyQL returns a structurally valid response with empty rows + a
+	// non-empty parseErrors array when the query is rejected (scope issue,
+	// schema change, syntax error). Surface those so the funnel command
+	// doesn't silently report 0 sessions and compute 0% conversion rates.
+	if len(env.ShopifyqlQuery.ParseErrors) > 0 {
+		msgs := make([]string, 0, len(env.ShopifyqlQuery.ParseErrors))
+		for _, pe := range env.ShopifyqlQuery.ParseErrors {
+			if pe.Code != "" {
+				msgs = append(msgs, pe.Code+": "+pe.Message)
+			} else {
+				msgs = append(msgs, pe.Message)
+			}
+		}
+		return 0, fmt.Errorf("shopifyql parse error: %s", strings.Join(msgs, "; "))
 	}
 	rows := env.ShopifyqlQuery.TableData.Rows
 	if len(rows) == 0 {

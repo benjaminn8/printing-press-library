@@ -326,7 +326,7 @@ func newReportCustomerLifecycleCmd(flags *rootFlags) *cobra.Command {
 	var days int
 	cmd := &cobra.Command{
 		Use:     "customer-lifecycle",
-		Short:   "Repeat-purchase distribution and median time-between-orders over the last N days.",
+		Short:   "Repeat-purchase distribution and mean time-between-orders over the last N days.",
 		Example: "  shopify-pp-cli report customer-lifecycle --days 365 --json",
 		Annotations: map[string]string{
 			"mcp:read-only": "true",
@@ -366,7 +366,12 @@ func newReportCustomerLifecycleCmd(flags *rootFlags) *cobra.Command {
 				}
 				dist = append(dist, b)
 			}
-			// Median time-between-orders for repeat customers.
+			// Mean time-between-orders for repeat customers (AVG).
+			// Note: gap distributions are typically right-skewed (a few very
+			// loyal customers ordering daily pull the mean above the typical
+			// inter-order gap). Use min/max plus the order_count_distribution
+			// to interpret context; a future median field would require
+			// SQLite percentile_cont logic or window-function nth-row tricks.
 			q2 := fmt.Sprintf(`
 				WITH ordered AS (
 				  SELECT json_extract(data, '$.customer.id') AS customer_id,
