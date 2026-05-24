@@ -66,7 +66,7 @@ func newCustomersTagCmd(flags *rootFlags) *cobra.Command {
 func newTagsMutationCmd(flags *rootFlags, resource, parent, verb, mutation, payloadField string) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     verb + " [id] [tags]",
-		Short:   fmt.Sprintf("%s tags on a Shopify %s. Pass the %s id (numeric or full GID) and a comma-separated tag list.", strings.Title(verb), strings.ToLower(resource), strings.ToLower(resource)),
+		Short:   fmt.Sprintf("%s tags on a Shopify %s. Pass the %s id (numeric or full GID) and a comma-separated tag list.", capitalizeASCII(verb), strings.ToLower(resource), strings.ToLower(resource)),
 		Example: fmt.Sprintf("  shopify-pp-cli %s tag %s 1234567890 VIP,wholesale --json", parent, verb),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) == 0 {
@@ -108,4 +108,18 @@ func newTagsMutationCmd(flags *rootFlags, resource, parent, verb, mutation, payl
 		},
 	}
 	return cmd
+}
+
+// capitalizeASCII uppercases the first byte of s when it's ASCII a-z.
+// Replaces deprecated strings.Title for the verb values ("add" / "remove")
+// used in this file's command short descriptions; ASCII-only is correct
+// because these verbs are compile-time constants.
+func capitalizeASCII(s string) string {
+	if s == "" {
+		return s
+	}
+	if s[0] >= 'a' && s[0] <= 'z' {
+		return string(s[0]-32) + s[1:]
+	}
+	return s
 }
