@@ -4,9 +4,13 @@ Companion to `ABSORB-MANIFEST.md`. Tracks where the patched binary is deployed, 
 
 ## State of this repo
 
-This is the fork `benjaminn8/printing-press-library` (parent: `mvanhorn/printing-press-library`). It carries the 5-bug patch set applied after a v4.6.1 factory reprint on 2026-05-16. Source of truth for any Shopify PP CLI binary running in this org.
+This is the fork `benjaminn8/printing-press-library` (parent: `mvanhorn/printing-press-library`). As of 2026-05-25 it is synced with upstream, which now ships the v4.14.0 reprint of Shopify (`mvanhorn/printing-press-library` PR #818, merged 2026-05-25T00:58Z, upstream commit `5ce37fce`). All 4 patches from ABSORB-MANIFEST that survived as generator-bug fixes are now baked in upstream via `.printing-press-patches.json` and tracked against `mvanhorn/cli-printing-press` issues #2056, #2057, #2058 (plus the library-side `shopifyql-funnel-real-columns`).
 
-Latest commit: `0d45795d` (`docs(shopify): add DEPLOYMENT.md tracking fork-deployed binaries`, 2026-05-24). Latest code patch: `580ec6e`.
+Fork-only files retained: `DEPLOYMENT.md` (this file) and `ABSORB-MANIFEST.md` (pre-merge tracker, kept as historical context).
+
+Open follow-up: `mvanhorn/printing-press-library` PR #834 (attribution-only sweep flipping `owner` slug from `benjamin-huang` to `benjaminn8`). When that merges, sync the fork again.
+
+Latest commit: `c835635d` (merge of `upstream/main` carrying the v4.14.0 reprint into the fork, 2026-05-25).
 
 ## Patches (full reference)
 
@@ -26,9 +30,9 @@ Bug #1 is library-side and belongs in any PR to upstream. Bugs #2, #3, #5 are ge
 
 | Host | Path | Arch | Built | Source | VCS rev |
 |---|---|---|---|---|---|
-| Air | `~/.local/bin/shopify-pp-cli` → `~/go/bin/shopify-pp-cli` | darwin/arm64 | 2026-05-24 | fork clone at `~/claudecode_demo/printing-press-library` | `0d45795d` |
-| iMac (Hermes-Mimi profile) | `~/.local/bin/shopify-pp-cli` → `~/go/bin/shopify-pp-cli` | darwin/arm64 | 2026-05-24 | fork clone at `~/code/printing-press-library` | `0d45795d` |
-| hosted_hermes (Atlas client VPS bundle) | `~/claudecode_demo/hosted_hermes/infra/bin/shopify-pp-cli-linux-amd64` | linux/amd64 | 2026-05-20 | fork at `580ec6e` (pre-DEPLOYMENT.md) | `580ec6e` |
+| Air | `~/.local/bin/shopify-pp-cli` → `~/go/bin/shopify-pp-cli` | darwin/arm64 | 2026-05-25 | fork clone at `~/claudecode_demo/printing-press-library` | `c835635d` |
+| iMac (Hermes-Mimi profile) | `~/.local/bin/shopify-pp-cli` → `~/go/bin/shopify-pp-cli` | darwin/arm64 | 2026-05-25 | fork clone at `~/code/printing-press-library` | `c835635d` |
+| hosted_hermes (Atlas client VPS bundle) | `~/claudecode_demo/hosted_hermes/infra/bin/shopify-pp-cli-linux-amd64` | linux/amd64 | 2026-05-20 | fork at `580ec6e` (pre-DEPLOYMENT.md, pre-v4.14.0) | `580ec6e` — STALE |
 
 **Air and iMac convention:** `~/.local/bin/shopify-pp-cli` is a symlink to `~/go/bin/shopify-pp-cli`. Both machines have `~/.local/bin` on `$PATH` (not `~/go/bin`), so the symlink is what makes `go install` updates take effect without manual copying.
 
