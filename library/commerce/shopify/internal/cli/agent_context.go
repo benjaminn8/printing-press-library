@@ -124,7 +124,7 @@ func buildAgentContext(rootCmd *cobra.Command) agentContext {
 		SchemaVersion: agentContextSchemaVersion,
 		CLI: agentContextCLI{
 			Name:        "shopify-pp-cli",
-			Description: "Operate a Shopify store from the terminal with curated Admin GraphQL commands, local sync, analytics, and bulk exports.",
+			Description: "Operate a Shopify store from the terminal with local sync, analytics, and bulk exports.",
 			Version:     rootCmd.Version,
 		},
 		Auth: agentContextAuth{

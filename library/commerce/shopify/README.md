@@ -1,10 +1,10 @@
 # Shopify CLI
 
-**Operate a Shopify store from the terminal with curated Admin GraphQL commands, local sync, analytics, and bulk exports.**
-
-Endpoint mirrors for orders, products, customers, inventory items, and fulfillment orders. A local SQLite store for offline reads and full-text search after sync. MCP server with both stdio and HTTP transport so agents (OpenAI Codex CLI, hosted clients) consume the same surface without learning GraphQL.
+Ecommerce orders, products, customers, inventory, fulfillment orders, and bulk operations via the Shopify Admin GraphQL API.
 
 Learn more at [Shopify](https://shopify.dev/docs/api/admin-graphql).
+
+Printed by [@cathrynlavery](https://github.com/cathrynlavery) (Cathryn Lavery).
 
 ## Install
 
@@ -32,7 +32,6 @@ To constrain the skill install to one or more specific agents (repeatable — ag
 npx -y @mvanhorn/printing-press-library install shopify --agent claude-code
 npx -y @mvanhorn/printing-press-library install shopify --agent claude-code --agent codex
 ```
-
 
 ### Without Node (Go fallback)
 
@@ -71,32 +70,83 @@ Tell your OpenClaw agent (copy this):
 Install the pp-shopify skill from https://github.com/mvanhorn/printing-press-library/tree/main/cli-skills/pp-shopify. The skill defines how its required CLI can be installed.
 ```
 
-## Authentication
+## Use with Claude Desktop
 
-Set SHOPIFY_ACCESS_TOKEN to a custom-app token with the read scopes you need (read_orders, read_products, read_customers, read_inventory, read_fulfillments).
+This CLI ships an [MCPB](https://github.com/modelcontextprotocol/mcpb) bundle — Claude Desktop's standard format for one-click MCP extension installs (no JSON config required).
+
+To install:
+
+1. Download the `.mcpb` for your platform from the [latest release](https://github.com/mvanhorn/printing-press-library/releases/tag/shopify-current).
+2. Double-click the `.mcpb` file. Claude Desktop opens and walks you through the install.
+3. Fill in `SHOPIFY_ACCESS_TOKEN` when Claude Desktop prompts you.
+
+Requires Claude Desktop 1.0.0 or later. Pre-built bundles ship for macOS Apple Silicon (`darwin-arm64`) and Windows (`amd64`, `arm64`); for other platforms, use the manual config below.
+
+<details>
+<summary>Manual JSON config (advanced)</summary>
+
+If you can't use the MCPB bundle (older Claude Desktop, unsupported platform), install the MCP binary and configure it manually.
+
+
+```bash
+go install github.com/mvanhorn/printing-press-library/library/commerce/shopify/cmd/shopify-pp-mcp@latest
+```
+
+Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "shopify": {
+      "command": "shopify-pp-mcp",
+      "env": {
+        "SHOPIFY_SHOP": "<your-store>.myshopify.com",
+        "SHOPIFY_API_VERSION": "2026-04",
+        "SHOPIFY_ACCESS_TOKEN": "<your-key>"
+      }
+    }
+  }
+}
+```
+
+</details>
 
 ## Quick Start
 
+### 1. Install
+
+See [Install](#install) above.
+
+### 2. Set Up Credentials
+This CLI talks to the Shopify GraphQL API at `https://{shop}/admin/api/{api_version}/graphql.json`.
+
+Set the endpoint variables for the tenant, workspace, or API version you want this CLI to use:
+
 ```bash
-# Confirm auth and shop reachability.
+export SHOPIFY_SHOP="<your-store>.myshopify.com"
+export SHOPIFY_API_VERSION="2026-04"
+```
+
+Get your API key from your API provider's developer portal. The key typically looks like a long alphanumeric string.
+
+```bash
+export SHOPIFY_ACCESS_TOKEN="<paste-your-key>"
+```
+
+You can also persist this in your config file at `~/.config/shopify-pp-cli/config.toml`.
+
+### 3. Verify Setup
+
+```bash
 shopify-pp-cli doctor
+```
 
+This checks your configuration and credentials.
 
-# Local archive state for all resources before any sync.
-shopify-pp-cli workflow status --json
+### 4. Try Your First Command
 
-
-# List recent orders with agent-native JSON.
-shopify-pp-cli orders list --first 10 --json
-
-
-# Cross-table FTS over synced data.
-shopify-pp-cli search 'pending' --json
-
-
-# Inspect the current Shopify bulk export job.
-shopify-pp-cli bulk-operations current --json
-
+```bash
+shopify-pp-cli abandoned-checkouts list
 ```
 
 ## Usage
@@ -191,21 +241,27 @@ Covered command paths:
 - `shopify-pp-cli abandoned-checkouts`
 - `shopify-pp-cli abandoned-checkouts get`
 - `shopify-pp-cli abandoned-checkouts list`
+- `shopify-pp-cli abandoned-checkouts search`
 - `shopify-pp-cli customers`
 - `shopify-pp-cli customers get`
 - `shopify-pp-cli customers list`
+- `shopify-pp-cli customers search`
 - `shopify-pp-cli fulfillment-orders`
 - `shopify-pp-cli fulfillment-orders get`
 - `shopify-pp-cli fulfillment-orders list`
+- `shopify-pp-cli fulfillment-orders search`
 - `shopify-pp-cli inventory-items`
 - `shopify-pp-cli inventory-items get`
 - `shopify-pp-cli inventory-items list`
+- `shopify-pp-cli inventory-items search`
 - `shopify-pp-cli orders`
 - `shopify-pp-cli orders get`
 - `shopify-pp-cli orders list`
+- `shopify-pp-cli orders search`
 - `shopify-pp-cli products`
 - `shopify-pp-cli products get`
 - `shopify-pp-cli products list`
+- `shopify-pp-cli products search`
 
 JSON outputs that use the generated provenance envelope include freshness metadata at `meta.freshness`. This metadata describes the freshness decision for the covered command path; it does not claim full historical backfill or API-specific enrichment.
 
@@ -220,75 +276,6 @@ Endpoint environment variables:
 Base URL: `https://{shop}`
 
 GraphQL path: `/admin/api/{api_version}/graphql.json`
-
-## Use with Claude Code
-
-Install the focused skill — it auto-installs the CLI on first invocation:
-
-```bash
-npx skills add mvanhorn/printing-press-library/cli-skills/pp-shopify -g
-```
-
-Then invoke `/pp-shopify <query>` in Claude Code. The skill is the most efficient path — Claude Code drives the CLI directly without an MCP server in the middle.
-
-<details>
-<summary>Use as an MCP server in Claude Code (advanced)</summary>
-
-If you'd rather register this CLI as an MCP server in Claude Code, install the MCP binary first:
-
-
-```bash
-go install github.com/mvanhorn/printing-press-library/library/commerce/shopify/cmd/shopify-pp-mcp@latest
-```
-
-Then register it:
-
-```bash
-claude mcp add shopify shopify-pp-mcp -e SHOPIFY_SHOP=<your-store>.myshopify.com -e SHOPIFY_API_VERSION=2026-04 -e SHOPIFY_ACCESS_TOKEN=<your-key>
-```
-
-</details>
-
-## Use with Claude Desktop
-
-This CLI ships an [MCPB](https://github.com/modelcontextprotocol/mcpb) bundle — Claude Desktop's standard format for one-click MCP extension installs (no JSON config required).
-
-To install:
-
-1. Download the `.mcpb` for your platform from the [latest release](https://github.com/mvanhorn/printing-press-library/releases/tag/shopify-current).
-2. Double-click the `.mcpb` file. Claude Desktop opens and walks you through the install.
-3. Fill in `SHOPIFY_ACCESS_TOKEN` when Claude Desktop prompts you.
-
-Requires Claude Desktop 1.0.0 or later. Pre-built bundles ship for macOS Apple Silicon (`darwin-arm64`) and Windows (`amd64`, `arm64`); for other platforms, use the manual config below.
-
-<details>
-<summary>Manual JSON config (advanced)</summary>
-
-If you can't use the MCPB bundle (older Claude Desktop, unsupported platform), install the MCP binary and configure it manually.
-
-
-```bash
-go install github.com/mvanhorn/printing-press-library/library/commerce/shopify/cmd/shopify-pp-mcp@latest
-```
-
-Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json`):
-
-```json
-{
-  "mcpServers": {
-    "shopify": {
-      "command": "shopify-pp-mcp",
-      "env": {
-        "SHOPIFY_SHOP": "<your-store>.myshopify.com",
-        "SHOPIFY_API_VERSION": "2026-04",
-        "SHOPIFY_ACCESS_TOKEN": "<your-key>"
-      }
-    }
-  }
-}
-```
-
-</details>
 
 ## Health Check
 
@@ -319,12 +306,6 @@ Environment variables:
 **Not found errors (exit code 3)**
 - Check the resource ID is correct
 - Run the `list` command to see available items
-
-### API-specific
-
-- **401 Unauthorized on every call** — Verify SHOPIFY_ACCESS_TOKEN is an Admin API token, not a Storefront API token. Re-issue under custom-app settings.
-- **Empty results from local search or analytics** — Run shopify-pp-cli sync --full first; analytics and search read from the local SQLite store.
-- **Stale data in queries** — Run shopify-pp-cli workflow status --json to see per-resource state, then sync the specific resource that is stale.
 
 ---
 

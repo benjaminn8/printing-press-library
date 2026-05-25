@@ -9,7 +9,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"shopify-pp-cli/internal/client"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/client"
 )
 
 func newCustomersGetCmd(flags *rootFlags) *cobra.Command {
@@ -30,7 +30,7 @@ func newCustomersGetCmd(flags *rootFlags) *cobra.Command {
 
 			path := "/graphql"
 			_ = path
-			data, err := c.Query(client.CustomersGetQuery, map[string]any{
+			data, err := c.Query(cmd.Context(), client.CustomersGetQuery, map[string]any{
 				"id": args[0],
 			})
 			if err == nil && !flags.dryRun {

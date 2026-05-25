@@ -62,7 +62,7 @@ func newBulkOperationsCurrentCmd(flags *rootFlags) *cobra.Command {
 				return err
 			}
 
-			data, err := c.Query(bulkOperationCurrentQuery, nil)
+			data, err := c.Query(cmd.Context(), bulkOperationCurrentQuery, nil)
 			if err == nil && !flags.dryRun {
 				data, err = extractGraphQLObject(data, "currentBulkOperation")
 			}
@@ -105,7 +105,7 @@ func newBulkOperationsRunQueryCmd(flags *rootFlags) *cobra.Command {
 				return err
 			}
 
-			data, err := c.Mutate(bulkOperationRunQueryMutation, map[string]any{"query": query})
+			data, err := c.Mutate(cmd.Context(), bulkOperationRunQueryMutation, map[string]any{"query": query})
 			if err == nil && !flags.dryRun {
 				data, err = extractGraphQLObject(data, "bulkOperationRunQuery")
 			}

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -35,14 +36,55 @@ func runShopifyql(cmd *cobra.Command, flags *rootFlags, query string) error {
 	if err != nil {
 		return err
 	}
-	data, err := c.Query(shopifyqlQueryMutation, map[string]any{"query": query})
+	data, err := c.Query(cmd.Context(), shopifyqlQueryMutation, map[string]any{"query": query})
 	if err == nil && !flags.dryRun {
+		// Surface ShopifyQL parseErrors before extracting so missing scopes
+		// or syntax errors fail loudly instead of printing an empty rows
+		// payload with exit 0. Same defense applied in extractScalarSessions
+		// for the funnel command.
+		if perr := checkShopifyqlParseErrors(data); perr != nil {
+			return classifyAPIError(perr, flags)
+		}
 		data, err = extractGraphQLObject(data, "shopifyqlQuery")
 	}
 	if err != nil {
 		return classifyAPIError(err, flags)
 	}
 	return printOutputWithFlags(cmd.OutOrStdout(), data, flags)
+}
+
+// checkShopifyqlParseErrors decodes the shopifyqlQuery.parseErrors array from
+// a raw GraphQL response and returns a non-nil error when ShopifyQL rejected
+// the query. ShopifyQL returns HTTP 200 with structurally valid JSON in this
+// case, so without an explicit check callers print "successful" empty rows.
+func checkShopifyqlParseErrors(raw json.RawMessage) error {
+	if len(raw) == 0 {
+		return nil
+	}
+	var env struct {
+		ShopifyqlQuery struct {
+			ParseErrors []struct {
+				Message string `json:"message"`
+				Code    string `json:"code"`
+			} `json:"parseErrors"`
+		} `json:"shopifyqlQuery"`
+	}
+	if err := json.Unmarshal(raw, &env); err != nil {
+		// Not a shopifyqlQuery shape; not our concern.
+		return nil
+	}
+	if len(env.ShopifyqlQuery.ParseErrors) == 0 {
+		return nil
+	}
+	msgs := make([]string, 0, len(env.ShopifyqlQuery.ParseErrors))
+	for _, pe := range env.ShopifyqlQuery.ParseErrors {
+		if pe.Code != "" {
+			msgs = append(msgs, pe.Code+": "+pe.Message)
+		} else {
+			msgs = append(msgs, pe.Message)
+		}
+	}
+	return fmt.Errorf("shopifyql parse error: %s", strings.Join(msgs, "; "))
 }
 
 func newShopifyqlQueryCmd(flags *rootFlags) *cobra.Command {
@@ -155,7 +197,7 @@ func runShopifyqlFunnel(cmd *cobra.Command, flags *rootFlags, days int) error {
 
 	// 1. Sessions - live ShopifyQL call (no BY clause = single aggregate row)
 	sessQuery := fmt.Sprintf("SHOW sessions FROM sessions %s", daysClause(days))
-	sessRaw, err := c.Query(shopifyqlQueryMutation, map[string]any{"query": sessQuery})
+	sessRaw, err := c.Query(cmd.Context(), shopifyqlQueryMutation, map[string]any{"query": sessQuery})
 	if err != nil {
 		return classifyAPIError(err, flags)
 	}
@@ -218,6 +260,12 @@ func runShopifyqlFunnel(cmd *cobra.Command, flags *rootFlags, days int) error {
 func extractScalarSessions(raw json.RawMessage) (int, error) {
 	if len(raw) == 0 {
 		return 0, fmt.Errorf("empty response")
+	}
+	// Surface ShopifyQL parseErrors first so a rejected query (missing scope,
+	// schema change, syntax error) fails loudly instead of returning 0
+	// sessions and silently producing 0% conversion rates downstream.
+	if err := checkShopifyqlParseErrors(raw); err != nil {
+		return 0, err
 	}
 	var env struct {
 		ShopifyqlQuery struct {

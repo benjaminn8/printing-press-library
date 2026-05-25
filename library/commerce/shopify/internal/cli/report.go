@@ -5,11 +5,12 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"math"
 	"strings"
 	"time"
 
 	"github.com/spf13/cobra"
-	"shopify-pp-cli/internal/store"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/store"
 )
 
 // Compound analytics commands. All read from the local SQLite store populated
@@ -277,31 +278,12 @@ line-item titles.`,
 				return err
 			}
 			defer db.Close()
-			containsExpr := `EXISTS (SELECT 1 FROM json_each(json_extract(orders.data, '$.lineItems.nodes')) WHERE LOWER(json_extract(value, '$.title')) LIKE LOWER(?))`
 			where := windowClause(days)
+			// Single CTE wrap: re-evaluating the json_each EXISTS per row is
+			// fine; SQLite can't share the predicate across CASE branches
+			// without an inner alias, and the cardinality here (one row per
+			// order in window) is bounded.
 			q := fmt.Sprintf(`
-				SELECT
-				  SUM(CASE WHEN %[1]s THEN 1 ELSE 0 END) AS anchor_orders,
-				  SUM(CASE WHEN %[1]s AND %[2]s THEN 1 ELSE 0 END) AS attached_orders
-				FROM orders WHERE %[3]s`, "anchor_match", "attached_match", where)
-			// json_each subqueries can't be inlined into CASE WHEN cleanly with multiple aliases.
-			// Use a CTE-style wrap.
-			q = fmt.Sprintf(`
-				WITH labeled AS (
-				  SELECT id,
-				         (%s) AS has_anchor,
-				         (%s) AS has_attached
-				  FROM orders
-				  WHERE %s
-				)
-				SELECT SUM(CASE WHEN has_anchor THEN 1 ELSE 0 END) AS anchor_orders,
-				       SUM(CASE WHEN has_anchor AND has_attached THEN 1 ELSE 0 END) AS attached_orders
-				FROM labeled`,
-				strings.Replace(containsExpr, "orders.data", "labeled_inner.data", 1),
-				strings.Replace(containsExpr, "orders.data", "labeled_inner.data", 1),
-				where)
-			// Simpler: re-author without the inner alias gymnastics
-			q = fmt.Sprintf(`
 				WITH base AS (
 				  SELECT id, data FROM orders WHERE %s
 				)
@@ -344,7 +326,7 @@ func newReportCustomerLifecycleCmd(flags *rootFlags) *cobra.Command {
 	var days int
 	cmd := &cobra.Command{
 		Use:     "customer-lifecycle",
-		Short:   "Repeat-purchase distribution and median time-between-orders over the last N days.",
+		Short:   "Repeat-purchase distribution and mean time-between-orders over the last N days.",
 		Example: "  shopify-pp-cli report customer-lifecycle --days 365 --json",
 		Annotations: map[string]string{
 			"mcp:read-only": "true",
@@ -384,7 +366,12 @@ func newReportCustomerLifecycleCmd(flags *rootFlags) *cobra.Command {
 				}
 				dist = append(dist, b)
 			}
-			// Median time-between-orders for repeat customers.
+			// Mean time-between-orders for repeat customers (AVG).
+			// Note: gap distributions are typically right-skewed (a few very
+			// loyal customers ordering daily pull the mean above the typical
+			// inter-order gap). Use min/max plus the order_count_distribution
+			// to interpret context; a future median field would require
+			// SQLite percentile_cont logic or window-function nth-row tricks.
 			q2 := fmt.Sprintf(`
 				WITH ordered AS (
 				  SELECT json_extract(data, '$.customer.id') AS customer_id,
@@ -430,5 +417,5 @@ func mustJSON(v any) json.RawMessage {
 }
 
 func round2(f float64) float64 {
-	return float64(int(f*100+0.5)) / 100
+	return math.Round(f*100) / 100
 }

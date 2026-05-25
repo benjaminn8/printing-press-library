@@ -11,8 +11,9 @@ import (
 )
 
 // auth_status implements `shopify-pp-cli auth audit`, which audits the OAuth
-// client_credentials grant setup that the Hermes refresher
-// (~/.hermes/profiles/mimi/scripts/shopify-refresh-token.sh) populates.
+// client_credentials grant setup. The optional SHOPIFY_REFRESHER_HINT env var
+// lets operators surface a path to their own token-refresh script in the audit
+// JSON output, so on-call automation knows where to rotate.
 //
 // The press-emitted doctor command only knows about SHOPIFY_ACCESS_TOKEN
 // presence; it doesn't understand client_credentials rotation. This command
@@ -64,7 +65,7 @@ client_credentials with the standard scope set).`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			status := AuthStatus{
 				StaleThresholdH: 20,
-				RefresherHint:   "~/.hermes/profiles/mimi/scripts/shopify-refresh-token.sh",
+				RefresherHint:   strings.TrimSpace(os.Getenv("SHOPIFY_REFRESHER_HINT")),
 			}
 			ok := true
 

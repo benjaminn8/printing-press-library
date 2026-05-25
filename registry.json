@@ -630,6 +630,47 @@
       }
     },
     {
+      "name": "art-goat",
+      "category": "media-and-entertainment",
+      "api": "Art Goat",
+      "description": "A contemplative daily art practice with museum and astronomy APIs as your gallery.",
+      "search_terms": [
+        "art-goat",
+        "Art Goat",
+        "art-goat-pp-cli",
+        "Contemplative timer sit",
+        "sit",
+        "Sit with one piece of art for a fixed period. Opens the image in your browser, shows the curator's description, runs a quiet timer, and captures your reflection in the journal.",
+        "Opinionated daily pick",
+        "today",
+        "Today's curated piece, chosen using anti-repeat against your sits and journal-aware diversity against your recent medium and culture choices. Includes a one-line 'why this today'.",
+        "Reframed practice metrics",
+        "journal stats",
+        "Practice statistics emphasising source breadth, medium variety, region coverage, and mood drift, with streak available at the bottom labeled 'if you want to know'.",
+        "Reflection full-text search",
+        "journal search",
+        "FTS5 over your reflection history. Surfaces every past sit whose text matches the query."
+      ],
+      "path": "library/media-and-entertainment/art-goat",
+      "printer": "justinwfu",
+      "printer_name": "justinwfu",
+      "mcp": {
+        "binary": "art-goat-pp-mcp",
+        "transports": [
+          "stdio"
+        ],
+        "tool_count": 1,
+        "public_tool_count": 0,
+        "auth_type": "api_key",
+        "env_vars": [
+          "ART_GOAT_API_KEY",
+          "NASA_API_KEY"
+        ],
+        "mcp_ready": "full",
+        "spec_format": "openapi3"
+      }
+    },
+    {
       "name": "arxiv",
       "category": "other",
       "api": "arXiv",
@@ -1074,6 +1115,43 @@
         ],
         "mcp_ready": "full",
         "spec_format": "openapi3"
+      }
+    },
+    {
+      "name": "chrome-history",
+      "category": "productivity",
+      "api": "Chrome History",
+      "description": "Reverse-engineered from the hand-built chrome-history-pp-cli command/data shape",
+      "search_terms": [
+        "chrome-history",
+        "Chrome History",
+        "chrome-history-pp-cli",
+        "Query local Chrome browsing history from a snapshot index; no remote API spec.",
+        "Chrome Journeys Topic Clusters",
+        "journeys",
+        "Surfaces Chrome's own Journeys topic clusters from local history databases.",
+        "Session Timeline Reconstruction",
+        "timeline",
+        "Reconstructs session-level browsing timelines using timestamp gaps and device filters.",
+        "Rabbithole Drift Detection",
+        "rabbitholes",
+        "Detects sessions that drift from productive starts into distracting browsing patterns."
+      ],
+      "path": "library/productivity/chrome-history",
+      "printer": "vinnyp",
+      "printer_name": "Vinny Pasceri",
+      "mcp": {
+        "binary": "chrome-history-pp-mcp",
+        "transports": [
+          "stdio",
+          "http"
+        ],
+        "tool_count": 19,
+        "public_tool_count": 19,
+        "auth_type": "none",
+        "env_vars": [],
+        "mcp_ready": "full",
+        "spec_format": "sqlite"
       }
     },
     {
@@ -1554,6 +1632,36 @@
         "env_vars": [
           "CUSTOMERIO_TOKEN"
         ],
+        "mcp_ready": "full",
+        "spec_format": "internal"
+      }
+    },
+    {
+      "name": "delta-trip",
+      "category": "travel",
+      "api": "Delta Trip Management",
+      "description": "Look up and manage Delta Air Lines trips by confirmation number — view all flights, seats, baggage, upgrade...",
+      "search_terms": [
+        "delta-trip",
+        "Delta Trip Management",
+        "delta-trip-pp-cli",
+        "Connection Risk Scoring",
+        "trip layover",
+        "Score every layover in a trip as OK, TIGHT, or HIGH with a per-connection recommended action — in one command, without parsing the full flights table."
+      ],
+      "path": "library/travel/delta-trip",
+      "printer": "paulbockewitz",
+      "printer_name": "Paul Bockewitz",
+      "mcp": {
+        "binary": "delta-trip-pp-mcp",
+        "transports": [
+          "stdio",
+          "http"
+        ],
+        "tool_count": 4,
+        "public_tool_count": 4,
+        "auth_type": "none",
+        "env_vars": [],
         "mcp_ready": "full",
         "spec_format": "internal"
       }
@@ -3946,6 +4054,46 @@
       }
     },
     {
+      "name": "mobalytics-lol",
+      "category": "media-and-entertainment",
+      "api": "mobalytics-lol",
+      "description": "Every League of Legends aggregator, plus a local SQLite for cross-champion queries no single page surfaces.",
+      "search_terms": [
+        "mobalytics-lol",
+        "mobalytics-lol-pp-cli",
+        "Counter-pool analysis",
+        "counter-pool",
+        "Given our champion pool and the enemy pool, return the full matchup matrix ranked by WR delta with sample-size floor — the SQL coaches do in their head.",
+        "Patch meta-shift",
+        "meta-shift",
+        "Diff two tier_snapshots and list champions that gained or lost ≥1 tier or ≥2% WR since a prior patch, with sample-size guard.",
+        "Head-to-head champion compare",
+        "compare",
+        "Side-by-side join across tier, build, counters, and matchups for two champions — including item-overlap percentage.",
+        "ARAM batch item-set export",
+        "item-set",
+        "Write LoL client item-set JSON for N champions in ARAM mode in one command, refreshing all stale files in the client config folder.",
+        "Duo-finder with candidate-pool filter",
+        "duo-finder",
+        "Best support pairings for a given ADC, restricted to a candidate support pool — coaches' player pools are fixed.",
+        "Personal pool tier digest",
+        "pool-digest",
+        "For each champion in your pool: current tier, WR delta since last patch, top-1 counter, top-1 synergy — all in one composite query.",
+        "Power-spike phase filter",
+        "power-spike",
+        "List champions ranked by early/mid/late spike strength for a chosen role — inverts Mobalytics's per-champion data into a leaderboard.",
+        "Flex-pick detector",
+        "flex",
+        "Champions that are ≥A-tier in 2+ roles for the same patch and rank — the SQL no aggregator surfaces because they index by role first.",
+        "Region-split tier compare",
+        "tier-list",
+        "Same patch, same rank — three regions side-by-side. Surfaces pick-priority drift between KR/EUW/NA that no aggregator defaults to."
+      ],
+      "path": "library/media-and-entertainment/mobalytics-lol",
+      "printer": "QuantumGlitch",
+      "printer_name": "QuantumGlitch"
+    },
+    {
       "name": "monarch-money",
       "category": "payments",
       "api": "Monarch Money",
@@ -6331,9 +6479,48 @@
       "search_terms": [
         "shopify",
         "shopify-pp-cli",
-        "Bulk operation runner",
-        "bulk-operations",
-        "Inspect the current Shopify bulk operation and launch bulk GraphQL export jobs from query text or a query file."
+        "Operate a Shopify store from the terminal with local sync, analytics, and bulk exports.",
+        "Sales Funnel from ShopifyQL",
+        "shopifyql funnel",
+        "Three-stage funnel over N days (sessions -> checkouts -> orders) computed via ShopifyQL with real response columns.",
+        "Raw ShopifyQL Query",
+        "shopifyql query",
+        "Run an arbitrary ShopifyQL query string and stream the JSON response.",
+        "Daily Sessions",
+        "shopifyql sessions",
+        "Online Store sessions per day for the last N days.",
+        "Conversion Rate",
+        "shopifyql conversion",
+        "Online Store conversion rate over the last N days, optionally per-day.",
+        "Daily Revenue Breakdown",
+        "report revenue-daily",
+        "Daily revenue, refunds, net, and order count over the last N days from the local orders store.",
+        "Channel Mix",
+        "report channel-mix",
+        "Revenue by sourceName (web, draft_order, pos, channel id) over the last N days.",
+        "Tag-Match Impact",
+        "report show-impact",
+        "Compare revenue for tag-matched orders against the rest over the last N days.",
+        "Attach Rate",
+        "report attach-rate",
+        "Percent of orders containing --anchor that also contain --attached, by case-insensitive line-item title substring.",
+        "Repeat-Purchase Lifecycle",
+        "report customer-lifecycle",
+        "Repeat-purchase distribution and median time-between-orders over the last N days.",
+        "Current Bulk Operation",
+        "bulk-operations current",
+        "Show the currently running or most recent Shopify bulk operation.",
+        "Run Bulk Query",
+        "bulk-operations run-query",
+        "Start a Shopify bulk operation from a GraphQL query string or file.",
+        "Order Tag Mutation",
+        "orders tag",
+        "Add or remove tags on a Shopify order by id or name.",
+        "Customer Tag Mutation",
+        "customers tag",
+        "Add or remove tags on a Shopify customer by id.",
+        "Auth Audit",
+        "Audit OAuth client_credentials setup and access-token freshness."
       ],
       "path": "library/commerce/shopify",
       "printer": "cathrynlavery",
@@ -6341,9 +6528,10 @@
       "mcp": {
         "binary": "shopify-pp-mcp",
         "transports": [
-          "stdio"
+          "stdio",
+          "http"
         ],
-        "tool_count": 10,
+        "tool_count": 12,
         "public_tool_count": 0,
         "auth_type": "api_key",
         "env_vars": [

@@ -4,7 +4,9 @@
 package cli
 
 import (
+	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"regexp"
@@ -14,8 +16,9 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"shopify-pp-cli/internal/client"
-	"shopify-pp-cli/internal/store"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/client"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/cliutil"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/store"
 )
 
 // syncResult holds the outcome of syncing a single resource.
@@ -126,6 +129,13 @@ Exit codes & warnings:
 			if concurrency < 1 {
 				concurrency = 4
 			}
+			// Under PRINTING_PRESS_VERIFY=1 (mock/dry-run), all goroutines
+			// reach SQLite without the natural serialization that network
+			// latency provides in real syncs, so the worker pool races on
+			// the writer and trips SQLITE_BUSY despite _busy_timeout.
+			if cliutil.IsVerifyEnv() {
+				concurrency = 1
+			}
 
 			started := time.Now()
 			work := make(chan string, len(resources))
@@ -137,7 +147,7 @@ Exit codes & warnings:
 				go func() {
 					defer wg.Done()
 					for resource := range work {
-						res := syncResource(c, db, resource, sinceTS, full, maxPages)
+						res := syncResource(cmd.Context(), c, db, resource, sinceTS, full, maxPages)
 						results <- res
 					}
 				}()
@@ -159,12 +169,20 @@ Exit codes & warnings:
 			var errCount int
 			var warnCount int
 			var successCount int
+			var firstErr error
+			var firstPlaceholderErr error
 			for res := range results {
 				if res.Err != nil {
 					if humanFriendly {
 						fmt.Fprintf(os.Stderr, "  %s: error: %v\n", res.Resource, res.Err)
 					}
 					errCount++
+					if firstErr == nil {
+						firstErr = res.Err
+					}
+					if firstPlaceholderErr == nil && errors.Is(res.Err, client.ErrPlaceholderCredential) {
+						firstPlaceholderErr = res.Err
+					}
 				} else if res.Warn != nil {
 					if humanFriendly {
 						fmt.Fprintf(os.Stderr, "  %s: warning: %v\n", res.Resource, res.Warn)
@@ -195,6 +213,9 @@ Exit codes & warnings:
 			}
 
 			if errCount > 0 {
+				if firstPlaceholderErr != nil {
+					return classifyAPIError(firstPlaceholderErr, flags)
+				}
 				return fmt.Errorf("%d resource(s) failed to sync", errCount)
 			}
 			if warnCount > 0 && successCount == 0 {
@@ -259,7 +280,7 @@ func graphqlSyncDefs() map[string]graphqlSyncDef {
 }
 
 // syncResource handles the full paginated sync of a single resource via GraphQL.
-func syncResource(c *client.Client, db *store.Store, resource, sinceTS string, full bool, maxPages int) syncResult {
+func syncResource(ctx context.Context, c *client.Client, db *store.Store, resource, sinceTS string, full bool, maxPages int) syncResult {
 	started := time.Now()
 
 	if !humanFriendly {
@@ -304,7 +325,7 @@ func syncResource(c *client.Client, db *store.Store, resource, sinceTS string, f
 			variables["query"] = "updated_at:>=" + sinceTS
 		}
 
-		data, err := c.Query(def.Query, variables)
+		data, err := c.Query(ctx, def.Query, variables)
 		if err != nil {
 			if w, ok := isSyncAccessWarning(err); ok {
 				if !humanFriendly {

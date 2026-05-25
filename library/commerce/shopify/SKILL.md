@@ -1,7 +1,7 @@
 ---
 name: pp-shopify
-description: "Operate a Shopify store from the terminal with curated Admin GraphQL commands, local sync, analytics, and bulk exports. Trigger phrases: `shopify orders`, `shopify products`, `shopify inventory`, `shopify customers`, `sync shopify data`, `use shopify-pp-cli`."
-author: "Benjamin Huang"
+description: "Operate a Shopify store from the terminal with local sync, analytics, and bulk exports."
+author: "Cathryn Lavery"
 license: "Apache-2.0"
 argument-hint: "<command> [args] | install cli|mcp"
 allowed-tools: "Read Bash"
@@ -37,11 +37,7 @@ go install github.com/mvanhorn/printing-press-library/library/commerce/shopify/c
 
 If `--version` reports "command not found" after install, the install step did not put the binary on `$PATH`. Do not proceed with skill commands until verification succeeds.
 
-Endpoint mirrors for orders, products, customers, inventory items, and fulfillment orders. A local SQLite store for offline reads and full-text search after sync. MCP server with both stdio and HTTP transport so agents (OpenAI Codex CLI, hosted clients) consume the same surface without learning GraphQL.
-
-## When to Use This CLI
-
-Use when an agent needs Shopify Admin GraphQL data without learning GraphQL. The MCP server exposes both stdio (Codex CLI) and HTTP (hosted agents). Best for read-heavy ops workflows and as the MCP backend for agent-driven Shopify operations.
+Ecommerce orders, products, customers, inventory, fulfillment orders, and bulk operations via the Shopify Admin GraphQL API.
 
 ## When Not to Use This CLI
 
@@ -80,11 +76,6 @@ Do not activate this CLI for requests that require creating, updating, deleting,
 - `shopify-pp-cli products list` — List products from the Shopify Admin GraphQL API.
 
 
-**Hand-written commands**
-
-- `shopify-pp-cli bulk-operations` — Run, poll, and inspect Shopify Admin GraphQL bulk operations.
-
-
 ## Freshness Contract
 
 This printed CLI owns bounded freshness only for registered store-backed read command paths. In `--data-source auto` mode, those paths check `sync_state` and may run a bounded refresh before reading local data. `--data-source local` never refreshes. `--data-source live` reads the API and does not mutate the local store. Set `SHOPIFY_NO_AUTO_REFRESH=1` to skip the freshness hook without changing source selection.
@@ -94,21 +85,27 @@ Covered paths:
 - `shopify-pp-cli abandoned-checkouts`
 - `shopify-pp-cli abandoned-checkouts get`
 - `shopify-pp-cli abandoned-checkouts list`
+- `shopify-pp-cli abandoned-checkouts search`
 - `shopify-pp-cli customers`
 - `shopify-pp-cli customers get`
 - `shopify-pp-cli customers list`
+- `shopify-pp-cli customers search`
 - `shopify-pp-cli fulfillment-orders`
 - `shopify-pp-cli fulfillment-orders get`
 - `shopify-pp-cli fulfillment-orders list`
+- `shopify-pp-cli fulfillment-orders search`
 - `shopify-pp-cli inventory-items`
 - `shopify-pp-cli inventory-items get`
 - `shopify-pp-cli inventory-items list`
+- `shopify-pp-cli inventory-items search`
 - `shopify-pp-cli orders`
 - `shopify-pp-cli orders get`
 - `shopify-pp-cli orders list`
+- `shopify-pp-cli orders search`
 - `shopify-pp-cli products`
 - `shopify-pp-cli products get`
 - `shopify-pp-cli products list`
+- `shopify-pp-cli products search`
 
 When JSON output uses the generated provenance envelope, freshness metadata appears at `meta.freshness`. Treat it as current-cache freshness for the covered command path, not a guarantee of complete historical backfill or API-specific enrichment.
 
@@ -122,44 +119,20 @@ shopify-pp-cli which "<capability in your own words>"
 
 `which` resolves a natural-language capability query to the best matching command from this CLI's curated feature index. Exit code `0` means at least one match; exit code `2` means no confident match — fall back to `--help` or use a narrower query.
 
-## Recipes
+## Hand-written Extensions
 
+These commands are declared by the spec author and require separate hand-written wiring; the generator does not emit Cobra registration for them. They are listed here for discoverability and are intentionally outside `## Command Reference` so the verify-skill unknown-command check does not treat them as generator-owned paths.
 
-### Confirm a clean install
-
-```bash
-shopify-pp-cli doctor --json
-```
-
-JSON health output suitable for piping into agent context.
-
-### Inspect local archive state
-
-```bash
-shopify-pp-cli workflow status --json
-```
-
-Per-resource sync state, row counts, age — agent's freshness oracle before running an offline query.
-
-### Narrow a verbose response for agents
-
-```bash
-shopify-pp-cli orders list --first 5 --agent --json --select edges.node.id,edges.node.name,edges.node.displayFinancialStatus
-```
-
-Pairs --agent with --select dotted paths so agents do not burn context on fields they did not ask for.
-
-### Check a bulk export status
-
-```bash
-shopify-pp-cli bulk-operations current --json
-```
-
-Bulk operations are async; this returns the current or most recent job state in one MCP call.
+- `shopify-pp-cli bulk-operations` — Run, poll, and inspect Shopify Admin GraphQL bulk operations.
 
 ## Auth Setup
+Run `shopify-pp-cli auth setup` to print the URL and steps for getting a key (add `--launch` to open the URL). Then set:
 
-Set SHOPIFY_ACCESS_TOKEN to a custom-app token with the read scopes you need (read_orders, read_products, read_customers, read_inventory, read_fulfillments).
+```bash
+export SHOPIFY_ACCESS_TOKEN="<your-key>"
+```
+
+Or persist it in `~/.config/shopify-pp-cli/config.toml`.
 
 Run `shopify-pp-cli doctor` to verify setup.
 
@@ -201,7 +174,7 @@ shopify-pp-cli feedback --stdin < notes.txt
 shopify-pp-cli feedback list --json --limit 10
 ```
 
-Entries are stored locally at `~/.shopify-pp-cli/feedback.jsonl`. They are never POSTed unless `SHOPIFY_FEEDBACK_ENDPOINT` is set AND either `--send` is passed or `SHOPIFY_FEEDBACK_AUTO_SEND=true`. Default behavior is local-only.
+Entries are stored locally at `~/.local/share/shopify-pp-cli/feedback.jsonl`. They are never POSTed unless `SHOPIFY_FEEDBACK_ENDPOINT` is set AND either `--send` is passed or `SHOPIFY_FEEDBACK_AUTO_SEND=true`. Default behavior is local-only.
 
 Write what *surprised* you, not a bug report. Short, specific, one line: that is the part that compounds.
 

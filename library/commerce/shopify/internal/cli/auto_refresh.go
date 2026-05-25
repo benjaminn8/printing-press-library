@@ -5,13 +5,14 @@ package cli
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
 	"time"
 
-	"shopify-pp-cli/internal/cliutil"
-	"shopify-pp-cli/internal/store"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/cliutil"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/store"
 )
 
 // readCommandResources maps command paths (`cmd.CommandPath()`) to the
@@ -50,10 +51,7 @@ var readCommandResources = map[string][]string{
 // configuration. Defaults: 6h global stale-after, env opt-out named after
 // the CLI. Per-resource overrides from spec.Cache.Resources take priority.
 func cachePolicy() cliutil.Policy {
-	staleAfter := 6 * time.Hour
-	if d, err := time.ParseDuration("30m"); err == nil {
-		staleAfter = d
-	}
+	staleAfter := 30 * time.Minute
 	perResource := map[string]time.Duration{}
 	if d, err := time.ParseDuration("1h"); err == nil {
 		perResource["customers"] = d
@@ -147,12 +145,37 @@ func autoRefreshIfStale(ctx context.Context, flags *rootFlags, resources []strin
 	meta.Ran = true
 	if err := runAutoRefresh(refreshCtx, flags, db, resources); err != nil {
 		fmt.Fprintf(os.Stderr, "warning: using stale shopify-pp-cli cache (refresh failed: %v)\n", err)
+		emitCacheRefreshFailedEvent(resources, err)
 		meta.Reason = "refresh_failed"
 		meta.Error = err.Error()
 		return meta
 	}
 	meta.Reason = "refreshed"
 	return meta
+}
+
+// emitCacheRefreshFailedEvent writes a structured one-line JSON event to
+// stderr alongside the prose warning so agents have a parseable signal
+// that subsequent results are being served from a stale cache. Novel
+// commands that bypass wrapWithProvenance (so meta.freshness never
+// reaches stdout) would otherwise leave agents with only the prose
+// warning. Mirrors the sync_warning shape from sync.go so the same
+// event vocabulary covers both refresh-time and pre-run paths.
+func emitCacheRefreshFailedEvent(resources []string, err error) {
+	payload := struct {
+		Event     string   `json:"event"`
+		Reason    string   `json:"reason"`
+		Resources []string `json:"resources,omitempty"`
+		Error     string   `json:"error"`
+	}{
+		Event:     "cache_warning",
+		Reason:    "refresh_failed",
+		Resources: resources,
+		Error:     err.Error(),
+	}
+	if out, mErr := json.Marshal(payload); mErr == nil {
+		fmt.Fprintln(os.Stderr, string(out))
+	}
 }
 
 // ensureFreshForResources lets hand-authored commands participate in the same
@@ -200,7 +223,7 @@ func runAutoRefresh(ctx context.Context, flags *rootFlags, db *store.Store, reso
 			return ctx.Err()
 		default:
 		}
-		result := syncResource(c, db, resource, "", false, 1)
+		result := syncResource(ctx, c, db, resource, "", false, 1)
 		if result.Err != nil {
 			failures = append(failures, fmt.Sprintf("%s: %v", resource, result.Err))
 		}

@@ -5,6 +5,7 @@ package mcp
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -14,12 +15,12 @@ import (
 
 	mcplib "github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
-	"shopify-pp-cli/internal/cli"
-	"shopify-pp-cli/internal/client"
-	"shopify-pp-cli/internal/cliutil"
-	"shopify-pp-cli/internal/config"
-	"shopify-pp-cli/internal/mcp/cobratree"
-	"shopify-pp-cli/internal/store"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/cli"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/client"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/cliutil"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/config"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/mcp/cobratree"
+	"github.com/mvanhorn/printing-press-library/library/commerce/shopify/internal/store"
 )
 
 // RegisterTools registers all API operations as MCP tools.
@@ -32,7 +33,7 @@ func RegisterTools(s *server.MCPServer) {
 			mcplib.WithDestructiveHintAnnotation(false),
 			mcplib.WithOpenWorldHintAnnotation(true),
 		),
-		makeAPIHandler("GET", "/graphql", []mcpParamBinding{{PublicName: "id", WireName: "id", Location: "query"}}, []string{"id"}),
+		makeAPIHandler("GET", "/graphql", true, false, nil, []mcpParamBinding{{PublicName: "id", WireName: "id", Location: "query"}}, []string{"id"}),
 	)
 	s.AddTool(
 		mcplib.NewTool("abandoned-checkouts_list",
@@ -44,7 +45,7 @@ func RegisterTools(s *server.MCPServer) {
 			mcplib.WithDestructiveHintAnnotation(false),
 			mcplib.WithOpenWorldHintAnnotation(true),
 		),
-		makeAPIHandler("GET", "/graphql", []mcpParamBinding{{PublicName: "first", WireName: "first", Location: "query"}, {PublicName: "after", WireName: "after", Location: "query"}, {PublicName: "query", WireName: "query", Location: "query"}}, []string{}),
+		makeAPIHandler("GET", "/graphql", true, false, nil, []mcpParamBinding{{PublicName: "first", WireName: "first", Location: "query"}, {PublicName: "after", WireName: "after", Location: "query"}, {PublicName: "query", WireName: "query", Location: "query"}}, []string{}),
 	)
 	s.AddTool(
 		mcplib.NewTool("customers_get",
@@ -54,7 +55,7 @@ func RegisterTools(s *server.MCPServer) {
 			mcplib.WithDestructiveHintAnnotation(false),
 			mcplib.WithOpenWorldHintAnnotation(true),
 		),
-		makeAPIHandler("GET", "/graphql", []mcpParamBinding{{PublicName: "id", WireName: "id", Location: "query"}}, []string{"id"}),
+		makeAPIHandler("GET", "/graphql", true, false, nil, []mcpParamBinding{{PublicName: "id", WireName: "id", Location: "query"}}, []string{"id"}),
 	)
 	s.AddTool(
 		mcplib.NewTool("customers_list",
@@ -66,7 +67,7 @@ func RegisterTools(s *server.MCPServer) {
 			mcplib.WithDestructiveHintAnnotation(false),
 			mcplib.WithOpenWorldHintAnnotation(true),
 		),
-		makeAPIHandler("GET", "/graphql", []mcpParamBinding{{PublicName: "first", WireName: "first", Location: "query"}, {PublicName: "after", WireName: "after", Location: "query"}, {PublicName: "query", WireName: "query", Location: "query"}}, []string{}),
+		makeAPIHandler("GET", "/graphql", true, false, nil, []mcpParamBinding{{PublicName: "first", WireName: "first", Location: "query"}, {PublicName: "after", WireName: "after", Location: "query"}, {PublicName: "query", WireName: "query", Location: "query"}}, []string{}),
 	)
 	s.AddTool(
 		mcplib.NewTool("fulfillment-orders_get",
@@ -76,7 +77,7 @@ func RegisterTools(s *server.MCPServer) {
 			mcplib.WithDestructiveHintAnnotation(false),
 			mcplib.WithOpenWorldHintAnnotation(true),
 		),
-		makeAPIHandler("GET", "/graphql", []mcpParamBinding{{PublicName: "id", WireName: "id", Location: "query"}}, []string{"id"}),
+		makeAPIHandler("GET", "/graphql", true, false, nil, []mcpParamBinding{{PublicName: "id", WireName: "id", Location: "query"}}, []string{"id"}),
 	)
 	s.AddTool(
 		mcplib.NewTool("fulfillment-orders_list",
@@ -88,7 +89,7 @@ func RegisterTools(s *server.MCPServer) {
 			mcplib.WithDestructiveHintAnnotation(false),
 			mcplib.WithOpenWorldHintAnnotation(true),
 		),
-		makeAPIHandler("GET", "/graphql", []mcpParamBinding{{PublicName: "first", WireName: "first", Location: "query"}, {PublicName: "after", WireName: "after", Location: "query"}, {PublicName: "query", WireName: "query", Location: "query"}}, []string{}),
+		makeAPIHandler("GET", "/graphql", true, false, nil, []mcpParamBinding{{PublicName: "first", WireName: "first", Location: "query"}, {PublicName: "after", WireName: "after", Location: "query"}, {PublicName: "query", WireName: "query", Location: "query"}}, []string{}),
 	)
 	s.AddTool(
 		mcplib.NewTool("inventory-items_get",
@@ -98,7 +99,7 @@ func RegisterTools(s *server.MCPServer) {
 			mcplib.WithDestructiveHintAnnotation(false),
 			mcplib.WithOpenWorldHintAnnotation(true),
 		),
-		makeAPIHandler("GET", "/graphql", []mcpParamBinding{{PublicName: "id", WireName: "id", Location: "query"}}, []string{"id"}),
+		makeAPIHandler("GET", "/graphql", true, false, nil, []mcpParamBinding{{PublicName: "id", WireName: "id", Location: "query"}}, []string{"id"}),
 	)
 	s.AddTool(
 		mcplib.NewTool("inventory-items_list",
@@ -110,7 +111,7 @@ func RegisterTools(s *server.MCPServer) {
 			mcplib.WithDestructiveHintAnnotation(false),
 			mcplib.WithOpenWorldHintAnnotation(true),
 		),
-		makeAPIHandler("GET", "/graphql", []mcpParamBinding{{PublicName: "first", WireName: "first", Location: "query"}, {PublicName: "after", WireName: "after", Location: "query"}, {PublicName: "query", WireName: "query", Location: "query"}}, []string{}),
+		makeAPIHandler("GET", "/graphql", true, false, nil, []mcpParamBinding{{PublicName: "first", WireName: "first", Location: "query"}, {PublicName: "after", WireName: "after", Location: "query"}, {PublicName: "query", WireName: "query", Location: "query"}}, []string{}),
 	)
 	s.AddTool(
 		mcplib.NewTool("orders_get",
@@ -120,7 +121,7 @@ func RegisterTools(s *server.MCPServer) {
 			mcplib.WithDestructiveHintAnnotation(false),
 			mcplib.WithOpenWorldHintAnnotation(true),
 		),
-		makeAPIHandler("GET", "/graphql", []mcpParamBinding{{PublicName: "id", WireName: "id", Location: "query"}}, []string{"id"}),
+		makeAPIHandler("GET", "/graphql", true, false, nil, []mcpParamBinding{{PublicName: "id", WireName: "id", Location: "query"}}, []string{"id"}),
 	)
 	s.AddTool(
 		mcplib.NewTool("orders_list",
@@ -132,7 +133,7 @@ func RegisterTools(s *server.MCPServer) {
 			mcplib.WithDestructiveHintAnnotation(false),
 			mcplib.WithOpenWorldHintAnnotation(true),
 		),
-		makeAPIHandler("GET", "/graphql", []mcpParamBinding{{PublicName: "first", WireName: "first", Location: "query"}, {PublicName: "after", WireName: "after", Location: "query"}, {PublicName: "query", WireName: "query", Location: "query"}}, []string{}),
+		makeAPIHandler("GET", "/graphql", true, false, nil, []mcpParamBinding{{PublicName: "first", WireName: "first", Location: "query"}, {PublicName: "after", WireName: "after", Location: "query"}, {PublicName: "query", WireName: "query", Location: "query"}}, []string{}),
 	)
 	s.AddTool(
 		mcplib.NewTool("products_get",
@@ -142,7 +143,7 @@ func RegisterTools(s *server.MCPServer) {
 			mcplib.WithDestructiveHintAnnotation(false),
 			mcplib.WithOpenWorldHintAnnotation(true),
 		),
-		makeAPIHandler("GET", "/graphql", []mcpParamBinding{{PublicName: "id", WireName: "id", Location: "query"}}, []string{"id"}),
+		makeAPIHandler("GET", "/graphql", true, false, nil, []mcpParamBinding{{PublicName: "id", WireName: "id", Location: "query"}}, []string{"id"}),
 	)
 	s.AddTool(
 		mcplib.NewTool("products_list",
@@ -154,7 +155,7 @@ func RegisterTools(s *server.MCPServer) {
 			mcplib.WithDestructiveHintAnnotation(false),
 			mcplib.WithOpenWorldHintAnnotation(true),
 		),
-		makeAPIHandler("GET", "/graphql", []mcpParamBinding{{PublicName: "first", WireName: "first", Location: "query"}, {PublicName: "after", WireName: "after", Location: "query"}, {PublicName: "query", WireName: "query", Location: "query"}}, []string{}),
+		makeAPIHandler("GET", "/graphql", true, false, nil, []mcpParamBinding{{PublicName: "first", WireName: "first", Location: "query"}, {PublicName: "after", WireName: "after", Location: "query"}, {PublicName: "query", WireName: "query", Location: "query"}}, []string{}),
 	)
 	// Search tool — faster than iterating list endpoints for finding specific items
 	s.AddTool(
@@ -201,7 +202,7 @@ type mcpParamBinding struct {
 }
 
 // makeAPIHandler creates a generic MCP tool handler for an API endpoint.
-func makeAPIHandler(method, pathTemplate string, bindings []mcpParamBinding, positionalParams []string) server.ToolHandlerFunc {
+func makeAPIHandler(method, pathTemplate string, readOnly bool, binaryResponse bool, headerOverrides map[string]string, bindings []mcpParamBinding, positionalParams []string) server.ToolHandlerFunc {
 	return func(ctx context.Context, req mcplib.CallToolRequest) (*mcplib.CallToolResult, error) {
 		c, err := newMCPClient()
 		if err != nil {
@@ -221,6 +222,19 @@ func makeAPIHandler(method, pathTemplate string, bindings []mcpParamBinding, pos
 		pathParams := make(map[string]bool, len(positionalParams))
 		params := make(map[string]string)
 		bodyArgs := make(map[string]any)
+		var headers map[string]string
+		if len(headerOverrides) > 0 {
+			headers = make(map[string]string, len(headerOverrides)+1)
+			for k, v := range headerOverrides {
+				headers[k] = v
+			}
+		}
+		if binaryResponse {
+			if headers == nil {
+				headers = map[string]string{}
+			}
+			headers[client.BinaryResponseHeader] = "true"
+		}
 		for _, binding := range bindings {
 			knownArgs[binding.PublicName] = true
 			v, ok := args[binding.PublicName]
@@ -264,15 +278,43 @@ func makeAPIHandler(method, pathTemplate string, bindings []mcpParamBinding, pos
 		var data json.RawMessage
 		switch method {
 		case "GET":
-			data, err = c.Get(path, params)
+			if len(headers) > 0 {
+				data, err = c.GetWithHeaders(ctx, path, params, headers)
+				break
+			}
+			data, err = c.Get(ctx, path, params)
 		case "POST":
-			data, _, err = c.PostWithParams(path, params, bodyArgs)
+			if len(headers) > 0 {
+				if readOnly {
+					data, _, err = c.PostQueryWithParamsAndHeaders(ctx, path, params, bodyArgs, headers)
+				} else {
+					data, _, err = c.PostWithParamsAndHeaders(ctx, path, params, bodyArgs, headers)
+				}
+				break
+			}
+			if readOnly {
+				data, _, err = c.PostQueryWithParams(ctx, path, params, bodyArgs)
+			} else {
+				data, _, err = c.PostWithParams(ctx, path, params, bodyArgs)
+			}
 		case "PUT":
-			data, _, err = c.PutWithParams(path, params, bodyArgs)
+			if len(headers) > 0 {
+				data, _, err = c.PutWithParamsAndHeaders(ctx, path, params, bodyArgs, headers)
+				break
+			}
+			data, _, err = c.PutWithParams(ctx, path, params, bodyArgs)
 		case "PATCH":
-			data, _, err = c.PatchWithParams(path, params, bodyArgs)
+			if len(headers) > 0 {
+				data, _, err = c.PatchWithParamsAndHeaders(ctx, path, params, bodyArgs, headers)
+				break
+			}
+			data, _, err = c.PatchWithParams(ctx, path, params, bodyArgs)
 		case "DELETE":
-			data, _, err = c.DeleteWithParams(path, params)
+			if len(headers) > 0 {
+				data, _, err = c.DeleteWithParamsAndHeaders(ctx, path, params, headers)
+				break
+			}
+			data, _, err = c.DeleteWithParams(ctx, path, params)
 		default:
 			return mcplib.NewToolResultError("unsupported method: " + method), nil
 		}
@@ -326,6 +368,14 @@ func makeAPIHandler(method, pathTemplate string, bindings []mcpParamBinding, pos
 					return mcplib.NewToolResultText(string(out)), nil
 				}
 			}
+		}
+		if binaryResponse {
+			out, _ := json.Marshal(map[string]any{
+				"content_encoding": "base64",
+				"data_base64":      base64.StdEncoding.EncodeToString(data),
+				"byte_count":       len(data),
+			})
+			return mcplib.NewToolResultText(string(out)), nil
 		}
 		return mcplib.NewToolResultText(string(data)), nil
 	}
@@ -483,7 +533,7 @@ func handleSQL(ctx context.Context, req mcplib.CallToolRequest) (*mcplib.CallToo
 func handleContext(_ context.Context, _ mcplib.CallToolRequest) (*mcplib.CallToolResult, error) {
 	ctx := map[string]any{
 		"api":         "shopify",
-		"description": "Operate a Shopify store from the terminal with curated Admin GraphQL commands, local sync, analytics, and bulk exports.",
+		"description": "Operate a Shopify store from the terminal with local sync, analytics, and bulk exports.",
 		"archetype":   "generic",
 		"tool_count":  12,
 		// tool_surface tells agents which surface a capability lives on.
