@@ -32,7 +32,19 @@ Bug #1 is library-side and belongs in any PR to upstream. Bugs #2, #3, #5 are ge
 |---|---|---|---|---|---|
 | Air | `~/.local/bin/shopify-pp-cli` → `~/go/bin/shopify-pp-cli` | darwin/arm64 | 2026-05-25 | fork clone at `~/claudecode_demo/printing-press-library` | `c835635d` |
 | iMac (Hermes-Mimi profile) | `~/.local/bin/shopify-pp-cli` → `~/go/bin/shopify-pp-cli` | darwin/arm64 | 2026-05-25 | fork clone at `~/code/printing-press-library` | `c835635d` |
-| hosted_hermes (Atlas client VPS bundle) | `~/claudecode_demo/hosted_hermes/infra/bin/shopify-pp-cli-linux-amd64` | linux/amd64 | 2026-05-20 | fork at `580ec6e` (pre-DEPLOYMENT.md, pre-v4.14.0) | `580ec6e` — STALE |
+| hosted_hermes (Atlas client VPS bundle, local artifact) | `~/claudecode_demo/hosted_hermes/infra/bin/shopify-pp-cli-linux-amd64` | linux/amd64 | 2026-05-25 | fork at `d6efd117` post-v4.14.0 merge | `d6efd117` |
+
+Cross-compile recipe used (Air, darwin/arm64 → linux/amd64):
+
+```bash
+brew install FiloSottile/musl-cross/musl-cross   # one-time
+cd ~/claudecode_demo/printing-press-library/library/commerce/shopify
+CC=x86_64-linux-musl-gcc CGO_ENABLED=1 GOOS=linux GOARCH=amd64 \
+  go build -trimpath -ldflags='-s -w -linkmode external -extldflags "-static"' \
+  -o ~/claudecode_demo/hosted_hermes/infra/bin/shopify-pp-cli-linux-amd64 ./cmd/shopify-pp-cli
+```
+
+Output is a statically-linked ELF (no glibc dep) — runs on any Linux amd64 host. The artifact above is the Air-side build; pushing it to each Atlas VPS is a separate rsync/scp step owned by the hosted_hermes deploy flow.
 
 **Air and iMac convention:** `~/.local/bin/shopify-pp-cli` is a symlink to `~/go/bin/shopify-pp-cli`. Both machines have `~/.local/bin` on `$PATH` (not `~/go/bin`), so the symlink is what makes `go install` updates take effect without manual copying.
 
