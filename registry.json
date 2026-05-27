@@ -6105,6 +6105,55 @@
       }
     },
     {
+      "name": "printify",
+      "category": "commerce",
+      "api": "Printify",
+      "description": "Create and audit Printify products with manifest-driven image uploads, personalization checks, and local proofing.",
+      "search_terms": [
+        "printify",
+        "printify-pp-cli",
+        "Create and audit Printify products with manifest-driven image uploads, personalization checks, and local proofing.",
+        "Personalization Coverage Audit",
+        "personalization-audit",
+        "Audit a product for documented personalization placeholder fields, missing text/image setup, and unsupported browser-only gaps.",
+        "Placement Matrix",
+        "placement-matrix",
+        "Show variant, print-area, placeholder, uploaded image, x/y/scale/angle, and missing-placement rows for a product.",
+        "Catalog Margin Matrix",
+        "catalog-margin-matrix",
+        "Join catalog variants and shipping data to estimate per-variant cost and margin at a target retail price.",
+        "Product Manifest Drift",
+        "product-drift",
+        "Compare an intended product manifest against the current Printify product payload after create or update.",
+        "Personalized Batch Manifest Compiler",
+        "personalization-batch",
+        "Expand a reusable product manifest and CSV rows into per-product manifests using documented image and text placeholder fields.",
+        "Asset Reuse Map",
+        "asset-reuse",
+        "List uploaded images, where each is used, unused uploads, and products sharing the same artwork.",
+        "Fulfillment Risk Scan",
+        "fulfillment-risk",
+        "Flag open orders tied to risky product, variant, publish, or shipment states."
+      ],
+      "path": "library/commerce/printify",
+      "printer": "horknfbr",
+      "printer_name": "horknfbr",
+      "mcp": {
+        "binary": "printify-pp-mcp",
+        "transports": [
+          "stdio"
+        ],
+        "tool_count": 40,
+        "public_tool_count": 0,
+        "auth_type": "bearer_token",
+        "env_vars": [
+          "PRINTIFY_BEARER_AUTH"
+        ],
+        "mcp_ready": "full",
+        "spec_format": "openapi3"
+      }
+    },
+    {
       "name": "producthunt",
       "category": "marketing",
       "api": "Product Hunt",
