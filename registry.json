@@ -2,6 +2,58 @@
   "schema_version": 2,
   "entries": [
     {
+      "name": "adguard-home",
+      "category": "monitoring",
+      "api": "AdGuard Home",
+      "description": "AdGuard Home REST-ish API. Our admin web interface is built on top of this REST-ish API.",
+      "search_terms": [
+        "adguard-home",
+        "AdGuard Home",
+        "adguard-home-pp-cli",
+        "DNS-level ad/tracker/malware blocking via AdGuard Home REST API for self-hosted network DNS management",
+        "DNS Health Report",
+        "health",
+        "Summarize AdGuard Home health from locally synced data: protection status, block rate, top blocked domains, stale sync detection, and query volume trends",
+        "Local Sync",
+        "sync",
+        "Sync API data to local SQLite for offline search and analysis with resumable incremental sync",
+        "Full-Text Search",
+        "search",
+        "Full-text search across synced data or live API with auto mode that falls back to local on network failure",
+        "Local Analytics",
+        "analytics",
+        "Analyze locally synced data with count, group-by, and summary operations",
+        "Archive Workflow",
+        "workflow archive",
+        "Sync all resources to local store for offline access and search in one command",
+        "Live Tail",
+        "tail",
+        "Stream live data changes by polling the API at configurable intervals, emitting NDJSON to stdout"
+      ],
+      "path": "library/monitoring/adguard-home",
+      "printer": "e-jung",
+      "printer_name": "Eric Jung",
+      "creator": {
+        "handle": "e-jung",
+        "name": "Eric Jung"
+      },
+      "mcp": {
+        "binary": "adguard-home-pp-mcp",
+        "transports": [
+          "stdio"
+        ],
+        "tool_count": 81,
+        "public_tool_count": 0,
+        "auth_type": "api_key",
+        "env_vars": [
+          "ADGUARD_HOME_USERNAME",
+          "ADGUARD_HOME_PASSWORD"
+        ],
+        "mcp_ready": "full",
+        "spec_format": "openapi3"
+      }
+    },
+    {
       "name": "adminbyrequest",
       "category": "devices",
       "api": "Admin By Request",
@@ -36,6 +88,10 @@
       "path": "library/devices/adminbyrequest",
       "printer": "joltsconsulting",
       "printer_name": "joltsconsulting",
+      "creator": {
+        "handle": "joltsconsulting",
+        "name": "joltsconsulting"
+      },
       "mcp": {
         "binary": "adminbyrequest-pp-mcp",
         "transports": [
@@ -64,7 +120,11 @@
       ],
       "path": "library/developer-tools/agent-capture",
       "printer": "mvanhorn",
-      "printer_name": "Matt Van Horn"
+      "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      }
     },
     {
       "name": "ahrefs",
@@ -94,6 +154,10 @@
       "path": "library/marketing/ahrefs",
       "printer": "cathrynlavery",
       "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathrynlavery",
+        "name": "Cathryn Lavery"
+      },
       "mcp": {
         "binary": "ahrefs-pp-mcp",
         "transports": [
@@ -151,6 +215,10 @@
       "path": "library/travel/airbnb",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
       "mcp": {
         "binary": "airbnb-pp-mcp",
         "transports": [
@@ -192,6 +260,10 @@
       "path": "library/developer-tools/airframe",
       "printer": "ChrisDrit",
       "printer_name": "Chris Drit",
+      "creator": {
+        "handle": "ChrisDrit",
+        "name": "Chris Drit"
+      },
       "mcp": {
         "binary": "airframe-pp-mcp",
         "transports": [
@@ -224,7 +296,11 @@
       ],
       "path": "library/travel/alaska-airlines",
       "printer": "mvanhorn",
-      "printer_name": "Matt Van Horn"
+      "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      }
     },
     {
       "name": "allrecipes",
@@ -263,6 +339,10 @@
       "path": "library/food-and-dining/allrecipes",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "allrecipes-pp-mcp",
         "transports": [
@@ -276,6 +356,114 @@
           "ALLRECIPES_COOKIES"
         ],
         "mcp_ready": "partial",
+        "spec_format": "internal"
+      }
+    },
+    {
+      "name": "alltrails",
+      "category": "travel",
+      "api": "Alltrails Unofficial Seed",
+      "description": "Evidence-labeled, live-capable route map for AllTrails browser/mobile surfaces. Not an official API contract.",
+      "search_terms": [
+        "alltrails",
+        "Alltrails Unofficial Seed",
+        "alltrails-pp-cli",
+        "Evidence-labeled, live-capable route map for AllTrails browser/mobile surfaces. Not an official API contract.",
+        "Authenticated AllTrails browser and mobile route atlas",
+        "alltrails list",
+        "Expose evidence-labeled AllTrails trail, map, activity, account, community, and user route templates captured from authenticated browser/mobile surfaces rather than relying on a public API contract.",
+        "PP-gated AllTrails live-write planner",
+        "alltrails create",
+        "Model account-changing AllTrails requests with default dry-run behavior, explicit risk labels, and the ALLTRAILS_PP_ALLOW_WRITES=1 barrier before any PP-side live mutation.",
+        "Agent-readable AllTrails risk and auth surface",
+        "agent-context",
+        "Publish bearer/cookie auth requirements, MCP read/write risk metadata, and route annotations so agents can distinguish safe reads from live account mutations."
+      ],
+      "path": "library/travel/alltrails",
+      "printer": "zaydiscold",
+      "printer_name": "zaydiscold",
+      "creator": {
+        "handle": "zaydiscold",
+        "name": "zaydiscold"
+      },
+      "mcp": {
+        "binary": "alltrails-pp-mcp",
+        "transports": [
+          "stdio",
+          "http"
+        ],
+        "tool_count": 9,
+        "public_tool_count": 9,
+        "auth_type": "bearer_or_cookie",
+        "env_vars": [
+          "ALLTRAILS_ACCESS_TOKEN",
+          "ALLTRAILS_COOKIE",
+          "ALLTRAILS_CSRF_TOKEN"
+        ],
+        "mcp_ready": "full",
+        "spec_format": "openapi3"
+      }
+    },
+    {
+      "name": "amazon-ads",
+      "category": "commerce",
+      "api": "Amazon Ads",
+      "description": "Amazon Ads CLI for reports, analytics, keyword optimization, and guarded automation",
+      "search_terms": [
+        "amazon-ads",
+        "Amazon Ads",
+        "amazon-ads-pp-cli",
+        "Amazon Ads CLI for OAuth profile setup, reports, profitability analytics, keyword optimization, and guarded campaign automation.",
+        "Profitability analytics",
+        "acos-vs-tacos, true-profit, break-even-acos",
+        "Estimate ad profitability from Amazon Ads reports, COGS, fees, and optional amazon-seller store revenue.",
+        "Search term optimization",
+        "search-term-mining, wasted-spend, negative-keyword-generator, new-keyword-opportunities",
+        "Turn Search Term Reports into promotion, negation, and waste-reduction recommendations.",
+        "Performance planning",
+        "portfolio-dashboard, campaign-comparison, product-ad-profitability, placement-analysis, seasonal-planner",
+        "Summarize spend, sales, ACOS, placement performance, product profit, and seasonal budget signals.",
+        "Hourly and pacing analysis",
+        "dayparting-analysis, budget-pacing",
+        "Analyze reports with hour/hourOfDay or timestamped rows for conversion windows and early budget exhaustion.",
+        "Keyword lifecycle and bid intelligence",
+        "keyword-decay, keyword-lifecycle, bid-history, keyword-snapshots, bid-optimizer",
+        "Track keyword trend history locally and recommend bid changes against target ACOS.",
+        "Competitive intelligence",
+        "share-of-voice, competitor-asin-mining",
+        "Mine share-of-voice and product-targeting reports for competitor ASIN and keyword visibility signals.",
+        "Report normalization",
+        "reports wait, normalize-report",
+        "Poll Amazon Ads async report status, read gzip reports, normalize CSV/JSON, and optionally import to the local SQLite store.",
+        "Guarded automation",
+        "auto-negate, auto-promote, budget-rebalance, bid-rules apply, automation-audit",
+        "Plan and optionally apply negative keywords, exact promotions, budget changes, and bid rules with dry-run defaults, guardrails, and audit logs.",
+        "Profile-aware OAuth setup",
+        "auth login, profiles list, profiles select, profiles current",
+        "Run Login with Amazon OAuth, persist refresh-token credentials locally, and select the Amazon Ads profile scope used on API calls."
+      ],
+      "path": "library/commerce/amazon-ads",
+      "printer": "cathrynlavery",
+      "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathrynlavery",
+        "name": "Cathryn Lavery"
+      },
+      "mcp": {
+        "binary": "amazon-ads-pp-mcp",
+        "transports": [
+          "stdio",
+          "http"
+        ],
+        "tool_count": 53,
+        "public_tool_count": 53,
+        "auth_type": "oauth2_refresh",
+        "env_vars": [
+          "AMAZON_ADS_CLIENT_ID",
+          "AMAZON_ADS_CLIENT_SECRET",
+          "AMAZON_ADS_REFRESH_TOKEN"
+        ],
+        "mcp_ready": "full",
         "spec_format": "internal"
       }
     },
@@ -318,6 +506,10 @@
       "path": "library/commerce/amazon-orders",
       "printer": "bwishan",
       "printer_name": "Brian Wishan",
+      "creator": {
+        "handle": "bwishan",
+        "name": "Brian Wishan"
+      },
       "mcp": {
         "binary": "amazon-orders-pp-mcp",
         "transports": [
@@ -347,6 +539,10 @@
       "path": "library/commerce/amazon-seller",
       "printer": "cathrynlavery",
       "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathrynlavery",
+        "name": "Cathryn Lavery"
+      },
       "mcp": {
         "binary": "amazon-seller-pp-mcp",
         "transports": [
@@ -406,6 +602,10 @@
       "path": "library/other/american-reindustrialization",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "american-reindustrialization-pp-mcp",
         "transports": [
@@ -463,6 +663,10 @@
       "path": "library/food-and-dining/anylist",
       "printer": "jeeves",
       "printer_name": "Jeeves",
+      "creator": {
+        "handle": "jeeves",
+        "name": "Jeeves"
+      },
       "mcp": {
         "binary": "anylist-pp-mcp",
         "transports": [
@@ -534,6 +738,10 @@
       "path": "library/other/apartments",
       "printer": "rderwin",
       "printer_name": "rderwin",
+      "creator": {
+        "handle": "rderwin",
+        "name": "rderwin"
+      },
       "mcp": {
         "binary": "apartments-pp-mcp",
         "transports": [
@@ -589,6 +797,10 @@
       "path": "library/developer-tools/apify",
       "printer": "kjmagnan1s",
       "printer_name": "Kevin Magnan",
+      "creator": {
+        "handle": "kjmagnan1s",
+        "name": "Kevin Magnan"
+      },
       "mcp": {
         "binary": "apify-pp-mcp",
         "transports": [
@@ -617,6 +829,10 @@
       "path": "library/media-and-entertainment/archive-is",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
       "mcp": {
         "binary": "archive-is-pp-mcp",
         "transports": [
@@ -654,6 +870,10 @@
       "path": "library/media-and-entertainment/art-goat",
       "printer": "justinwfu",
       "printer_name": "justinwfu",
+      "creator": {
+        "handle": "justinwfu",
+        "name": "justinwfu"
+      },
       "mcp": {
         "binary": "art-goat-pp-mcp",
         "transports": [
@@ -690,6 +910,10 @@
       "path": "library/other/arxiv",
       "printer": "hnshah",
       "printer_name": "Hiten Shah",
+      "creator": {
+        "handle": "hnshah",
+        "name": "Hiten Shah"
+      },
       "mcp": {
         "binary": "arxiv-pp-mcp",
         "transports": [
@@ -736,6 +960,10 @@
       "path": "library/media-and-entertainment/bandsintown",
       "printer": "4.5.2",
       "printer_name": "printing-press",
+      "creator": {
+        "handle": "4.5.2",
+        "name": "printing-press"
+      },
       "mcp": {
         "binary": "bandsintown-pp-mcp",
         "transports": [
@@ -780,6 +1008,10 @@
       "path": "library/marketing/beehiiv",
       "printer": "kjmagnan1s",
       "printer_name": "Kevin Magnan",
+      "creator": {
+        "handle": "kjmagnan1s",
+        "name": "Kevin Magnan"
+      },
       "mcp": {
         "binary": "beehiiv-pp-mcp",
         "transports": [
@@ -790,6 +1022,77 @@
         "auth_type": "bearer_token",
         "env_vars": [
           "BEEHIIV_BEARER_AUTH"
+        ],
+        "mcp_ready": "full",
+        "spec_format": "openapi3"
+      }
+    },
+    {
+      "name": "bento",
+      "category": "marketing",
+      "api": "Bento",
+      "description": "Every Bento feature, plus the ones their own CLI does not have",
+      "search_terms": [
+        "bento",
+        "bento-pp-cli",
+        "Every Bento feature, plus the ones their own CLI does not have, plus a local SQLite store that turns 'who are my top spenders by tag' into a one-liner.",
+        "Snapshot Diff",
+        "sync diff",
+        "Show exactly which subscribers, tags, fields, or templates changed between two local snapshots since Bento has no since filter.",
+        "Hygiene Pipeline",
+        "hygiene scrub",
+        "Run validation + jesses_ruleset + blacklist + content_moderation in one pass and emit a clean CSV plus a rejected CSV with reasons.",
+        "Purchase Replay",
+        "events purchase-replay",
+        "Dry-run a Vendure order export against the Bento $purchase mapping and show the exact batch payload before sending.",
+        "Trigger Path Lint",
+        "events lint",
+        "Warn when a payload uses /fetch/commands subscribe but the intent (welcome flow, tag-triggered automation) requires /batch/events to fire automations.",
+        "Churn Risk Score",
+        "subscribers churn-risk",
+        "Rank subscribers by days-since-last-open/click against your cohort baseline before the next broadcast goes out.",
+        "Win-Back Cohort",
+        "subscribers winback",
+        "Build a CSV of customers who bought once, lapsed 180+ days, and never opened the last 3 broadcasts.",
+        "Review Trigger Coexist",
+        "events review-window",
+        "Emit a dated Bento event stream for orders shipped 10 days ago, skipping any order Stamped already triggered.",
+        "Pre-Delete Audit",
+        "subscribers pre-delete",
+        "Show tags, events, revenue, and active automations a subscriber set carries before you file a GDPR data_deletion_request.",
+        "Broadcast What-If",
+        "broadcasts whatif",
+        "Estimate audience size, predicted opens, and hygiene-risk count for a draft broadcast before you queue it in the dashboard.",
+        "Tag Drift Report",
+        "tags drift",
+        "Surface tags whose subscriber counts swung more than N% week-over-week, catching misfiring workflows.",
+        "Field Schema Lint",
+        "fields lint",
+        "Diff local custom fields against a Vendure customer-schema file and flag missing, renamed, or type-mismatched fields.",
+        "Cohort FTS",
+        "subscribers find",
+        "Full-text search subscriber notes/fields plus structured filters in one query, exportable as CSV."
+      ],
+      "path": "library/marketing/bento",
+      "printer": "bossriceshark",
+      "printer_name": "bossriceshark",
+      "creator": {
+        "handle": "bossriceshark",
+        "name": "bossriceshark"
+      },
+      "mcp": {
+        "binary": "bento-pp-mcp",
+        "transports": [
+          "stdio",
+          "http"
+        ],
+        "tool_count": 20,
+        "public_tool_count": 0,
+        "auth_type": "api_key",
+        "env_vars": [
+          "BENTO_PUBLISHABLE_KEY",
+          "BENTO_SECRET_KEY",
+          "BENTO_SITE_UUID"
         ],
         "mcp_ready": "full",
         "spec_format": "openapi3"
@@ -835,6 +1138,10 @@
       "path": "library/social-and-messaging/bird",
       "printer": "CleverAI-ZH",
       "printer_name": "Stephan Stoeber",
+      "creator": {
+        "handle": "CleverAI-ZH",
+        "name": "Stephan Stoeber"
+      },
       "mcp": {
         "binary": "bird-pp-mcp",
         "transports": [
@@ -883,6 +1190,10 @@
       "path": "library/media-and-entertainment/blu-ray",
       "printer": "vinnyp",
       "printer_name": "Vinny Pasceri",
+      "creator": {
+        "handle": "vinnyp",
+        "name": "Vinny Pasceri"
+      },
       "mcp": {
         "binary": "blu-ray-pp-mcp",
         "transports": [
@@ -951,6 +1262,10 @@
       "path": "library/travel/booking-com",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
       "mcp": {
         "binary": "booking-com-pp-mcp",
         "transports": [
@@ -990,6 +1305,10 @@
       "path": "library/marketing/botsee",
       "printer": "grahac",
       "printer_name": "grahac",
+      "creator": {
+        "handle": "grahac",
+        "name": "grahac"
+      },
       "mcp": {
         "binary": "botsee-pp-mcp",
         "transports": [
@@ -1061,6 +1380,10 @@
       "path": "library/productivity/cal-com",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "cal-com-pp-mcp",
         "transports": [
@@ -1099,6 +1422,10 @@
       "path": "library/cloud/cf-domain",
       "printer": "danny-shmueli",
       "printer_name": "Danny Shmueli",
+      "creator": {
+        "handle": "danny-shmueli",
+        "name": "Danny Shmueli"
+      },
       "mcp": {
         "binary": "cf-domain-pp-mcp",
         "transports": [
@@ -1140,6 +1467,10 @@
       "path": "library/productivity/chrome-history",
       "printer": "vinnyp",
       "printer_name": "Vinny Pasceri",
+      "creator": {
+        "handle": "vinnyp",
+        "name": "Vinny Pasceri"
+      },
       "mcp": {
         "binary": "chrome-history-pp-mcp",
         "transports": [
@@ -1157,11 +1488,11 @@
     {
       "name": "clarity",
       "category": "marketing",
-      "api": "PP Clarity",
+      "api": "Microsoft Clarity",
       "description": "Client-side instrumentation helpers for Microsoft Clarity.",
       "search_terms": [
         "clarity",
-        "PP Clarity",
+        "Microsoft Clarity",
         "clarity-pp-cli",
         "Generate Microsoft Clarity client API snippets and inspect the Clarity tag script.",
         "Snippet renderer",
@@ -1174,6 +1505,10 @@
       "path": "library/marketing/clarity",
       "printer": "cathrynlavery",
       "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathrynlavery",
+        "name": "Cathryn Lavery"
+      },
       "mcp": {
         "binary": "clarity-pp-mcp",
         "transports": [
@@ -1210,6 +1545,10 @@
       "path": "library/project-management/clickup",
       "printer": "kjmagnan1s",
       "printer_name": "Kevin Magnan",
+      "creator": {
+        "handle": "kjmagnan1s",
+        "name": "Kevin Magnan"
+      },
       "mcp": {
         "binary": "clickup-pp-mcp",
         "transports": [
@@ -1220,6 +1559,65 @@
         "auth_type": "api_key",
         "env_vars": [
           "CLICKUP_AUTHORIZATION_TOKEN"
+        ],
+        "mcp_ready": "full",
+        "spec_format": "openapi3"
+      }
+    },
+    {
+      "name": "clockify",
+      "category": "productivity",
+      "api": "Clockify",
+      "description": "Every Clockify feature, plus a local time database that reconstructs your weekly timesheet, finds untracked gaps,...",
+      "search_terms": [
+        "clockify",
+        "clockify-pp-cli",
+        "Timesheet week reconstruct",
+        "timesheet week",
+        "Rebuild your whole weekly timesheet grid offline — every project and task across each weekday, with per-day, per-project, and weekly totals.",
+        "Timesheet gap finder",
+        "timesheet gaps",
+        "Find the days you are short — compares each day's tracked hours against your workday target and reports the missing time before you submit.",
+        "Billable leakage audit",
+        "audit billable",
+        "Catch the misfiled entries that silently drop off invoices — billable time with no project, billable tasks marked non-billable, and untagged billable entries.",
+        "Team submission tracker",
+        "team timesheets",
+        "See who has not submitted — diffs the full workspace user list against the week's approval requests so the people who forgot are visible, not invisible.",
+        "Where-did-my-week-go recap",
+        "recap",
+        "A ranked breakdown of where your tracked time went — by project, client, and tag, with the billable vs non-billable split and percentage of the total.",
+        "Unbilled billable balance",
+        "billable pending",
+        "The invoice-ready number — sums billable time not yet covered by any synced invoice, grouped by client.",
+        "Project budget burn",
+        "projects burn",
+        "Estimate vs actual per project — hours logged against the project's budget or time estimate, with percent consumed.",
+        "Full-text entry search",
+        "search",
+        "Full-text search across every synced time-entry description and project, task, client, and tag name.",
+        "Draft entries from logs and files",
+        "backfill",
+        "Reconstruct the time you forgot to track — turn a CSV export, your shell history, or a CLI session log into draft time entries, review them, then commit them to Clockify."
+      ],
+      "path": "library/productivity/clockify",
+      "printer": "melanson633",
+      "printer_name": "melanson633",
+      "creator": {
+        "handle": "melanson633",
+        "name": "melanson633"
+      },
+      "mcp": {
+        "binary": "clockify-pp-mcp",
+        "transports": [
+          "stdio",
+          "http"
+        ],
+        "tool_count": 155,
+        "public_tool_count": 0,
+        "auth_type": "api_key",
+        "env_vars": [
+          "CLOCKIFY_API_KEY"
         ],
         "mcp_ready": "full",
         "spec_format": "openapi3"
@@ -1254,6 +1652,10 @@
       "path": "library/cloud/cloud-run-admin",
       "printer": "cathrynlavery",
       "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathrynlavery",
+        "name": "Cathryn Lavery"
+      },
       "mcp": {
         "binary": "cloud-run-admin-pp-mcp",
         "transports": [
@@ -1369,7 +1771,11 @@
       ],
       "path": "library/food-and-dining/coffee-goat",
       "printer": "justinwfu",
-      "printer_name": "Justin Fu"
+      "printer_name": "Justin Fu",
+      "creator": {
+        "handle": "justinwfu",
+        "name": "Justin Fu"
+      }
     },
     {
       "name": "coingecko",
@@ -1393,6 +1799,10 @@
       "path": "library/payments/coingecko",
       "printer": "hnshah",
       "printer_name": "Hiten Shah",
+      "creator": {
+        "handle": "hnshah",
+        "name": "Hiten Shah"
+      },
       "mcp": {
         "binary": "coingecko-pp-mcp",
         "transports": [
@@ -1440,6 +1850,10 @@
       "path": "library/developer-tools/company-goat",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "company-goat-pp-mcp",
         "transports": [
@@ -1479,6 +1893,10 @@
       "path": "library/sales-and-crm/conduyt-crm",
       "printer": "ptaramona",
       "printer_name": "Conduyt",
+      "creator": {
+        "handle": "ptaramona",
+        "name": "Conduyt"
+      },
       "mcp": {
         "binary": "conduyt-crm-pp-mcp",
         "transports": [
@@ -1509,6 +1927,10 @@
       "path": "library/sales-and-crm/contact-goat",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
       "mcp": {
         "binary": "contact-goat-pp-mcp",
         "transports": [
@@ -1568,6 +1990,10 @@
       "path": "library/commerce/craigslist",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "craigslist-pp-mcp",
         "transports": [
@@ -1620,6 +2046,10 @@
       "path": "library/marketing/customer-io",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "customer-io-pp-mcp",
         "transports": [
@@ -1634,6 +2064,45 @@
         ],
         "mcp_ready": "full",
         "spec_format": "internal"
+      }
+    },
+    {
+      "name": "defillama",
+      "category": "other",
+      "api": "Defillama",
+      "description": "DefiLlama offers two ways to use our data with AI:",
+      "search_terms": [
+        "defillama",
+        "defillama-pp-cli",
+        "DefiLlama offers two ways to use our data with AI:",
+        "Compound workflows",
+        "defillama-pp-cli workflow",
+        "Run multi-step DefiLlama workflows that combine API operations for agent-friendly analysis.",
+        "Offline analytics",
+        "defillama-pp-cli analytics",
+        "Query locally synced DefiLlama data for repeatable analysis without re-fetching every endpoint.",
+        "Live/local search",
+        "defillama-pp-cli search",
+        "Search across synced DefiLlama data or live API resources from one command."
+      ],
+      "path": "library/other/defillama",
+      "printer": "kierandotai",
+      "printer_name": "kierandotai",
+      "creator": {
+        "handle": "kierandotai",
+        "name": "kierandotai"
+      },
+      "mcp": {
+        "binary": "defillama-pp-mcp",
+        "transports": [
+          "stdio"
+        ],
+        "tool_count": 114,
+        "public_tool_count": 114,
+        "auth_type": "none",
+        "env_vars": [],
+        "mcp_ready": "full",
+        "spec_format": "openapi3"
       }
     },
     {
@@ -1652,6 +2121,10 @@
       "path": "library/travel/delta-trip",
       "printer": "paulbockewitz",
       "printer_name": "Paul Bockewitz",
+      "creator": {
+        "handle": "paulbockewitz",
+        "name": "Paul Bockewitz"
+      },
       "mcp": {
         "binary": "delta-trip-pp-mcp",
         "transports": [
@@ -1662,6 +2135,78 @@
         "public_tool_count": 4,
         "auth_type": "none",
         "env_vars": [],
+        "mcp_ready": "full",
+        "spec_format": "internal"
+      }
+    },
+    {
+      "name": "dice-fm",
+      "category": "media-and-entertainment",
+      "api": "DICE",
+      "description": "Every ticket, fan, and pound of revenue from your DICE events — queryable, exportable, and joinable across shows.",
+      "search_terms": [
+        "dice-fm",
+        "DICE",
+        "dice-fm-pp-cli",
+        "Every ticket, fan, and pound of revenue from your DICE events — queryable, exportable, and joinable across shows.",
+        "Door List with Transfer Resolution",
+        "door list",
+        "Generate a valid-ticket-holder list for any event, with transferred tickets showing the new holder's name — ready for door access management.",
+        "Revenue Summary",
+        "Aggregate gross revenue, Dice fees, and net earnings per event or across a date range — ready for CFO reports.",
+        "Ticket Velocity",
+        "velocity show",
+        "Show cumulative ticket sales by day or hour relative to the on-sale date — see whether an event is tracking fast or slow.",
+        "Cross-Event Repeat Buyer Report",
+        "fans repeat",
+        "Find fans who bought tickets to two or more of your events — your most loyal audience, ready for VIP outreach.",
+        "Opt-In Fan List with Geography Filter",
+        "fans optin",
+        "Export opted-in fan contacts filtered by city or country — CSV ready for Mailchimp, no dashboard exports needed.",
+        "Return Rate Anomaly Report",
+        "returns anomalies",
+        "Flag events with unusually high refund rates — a pricing or marketing signal that deserves immediate attention.",
+        "Top Spenders",
+        "fans top",
+        "Rank ticket buyers by total spend for an event or across all events — your VIP list for comps, upgrades, and sponsor decks.",
+        "Cross-Event Capacity Headroom",
+        "capacity",
+        "Roll up sold-vs-capacity headroom across every event from the local store — see which shows have room and which are nearly sold out.",
+        "Per-Pool Allocation Breakdown",
+        "capacity pools",
+        "Break down each event's ticket-pool allocations (pool-sum vs event total) from the local store — spot mis-allocated or over-subscribed pools.",
+        "Price-Tier Performance",
+        "tier-performance",
+        "Rank price tiers by redemptions and each tier's share of total sales from the local store — see which tiers actually move.",
+        "Entity Normalization",
+        "normalize",
+        "Canonicalize free-text ticket-type and venue names into structured axes in a parallel, re-runnable local store — raw data untouched, mappings stay on your machine.",
+        "Normalized Entity Stats",
+        "normalize stats",
+        "Show normalized entity counts per axis from the local attribute tables — verify coverage before grouping reports by axis.",
+        "Normalization Recommender",
+        "normalize recommend",
+        "Profile the local store and emit a starter normalization config — a ready-to-edit recommendation of which entities and shapes to wire."
+      ],
+      "path": "library/media-and-entertainment/dice-fm",
+      "printer": "vinnyp",
+      "printer_name": "Vinny Pasceri",
+      "creator": {
+        "handle": "vinnyp",
+        "name": "Vinny Pasceri"
+      },
+      "mcp": {
+        "binary": "dice-fm-pp-mcp",
+        "transports": [
+          "stdio",
+          "http"
+        ],
+        "tool_count": 8,
+        "public_tool_count": 0,
+        "auth_type": "bearer_token",
+        "env_vars": [
+          "DICE_FM_TOKEN"
+        ],
         "mcp_ready": "full",
         "spec_format": "internal"
       }
@@ -1721,6 +2266,10 @@
       "path": "library/media-and-entertainment/digg",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
       "mcp": {
         "binary": "digg-pp-mcp",
         "transports": [
@@ -1759,6 +2308,10 @@
       "path": "library/cloud/digitalocean",
       "printer": "hnshah",
       "printer_name": "Hiten Shah",
+      "creator": {
+        "handle": "hnshah",
+        "name": "Hiten Shah"
+      },
       "mcp": {
         "binary": "digitalocean-pp-mcp",
         "transports": [
@@ -1796,6 +2349,10 @@
       "path": "library/developer-tools/docker-hub",
       "printer": "hnshah",
       "printer_name": "Hiten Shah",
+      "creator": {
+        "handle": "hnshah",
+        "name": "Hiten Shah"
+      },
       "mcp": {
         "binary": "docker-hub-pp-mcp",
         "transports": [
@@ -1847,6 +2404,10 @@
       "path": "library/developer-tools/domain-goat",
       "printer": "mitch-nick",
       "printer_name": "Mitch Nick",
+      "creator": {
+        "handle": "mitch-nick",
+        "name": "Mitch Nick"
+      },
       "mcp": {
         "binary": "domain-goat-pp-mcp",
         "transports": [
@@ -1910,6 +2471,10 @@
       "path": "library/food-and-dining/dominos",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
       "mcp": {
         "binary": "dominos-pp-mcp",
         "transports": [
@@ -1925,6 +2490,50 @@
           "DOMINOS_TOKEN"
         ],
         "mcp_ready": "full",
+        "spec_format": "internal"
+      }
+    },
+    {
+      "name": "doordash",
+      "category": "commerce",
+      "api": "DoorDash",
+      "description": "Discovered API spec for doordash",
+      "search_terms": [
+        "doordash",
+        "doordash-pp-cli",
+        "Safe store search",
+        "search",
+        "Search DoorDash stores through the consumer GraphQL autocomplete feed without mutating cart or order state.",
+        "Menu and option inspection",
+        "menu",
+        "Fetch DoorDash store menus in a normalized shape without changing the cart.",
+        "Item customization discovery",
+        "item-options",
+        "Inspect item option groups and nested add-ons before adding anything to a cart.",
+        "Redacted account reads",
+        "recent-orders",
+        "Read recent DoorDash order summaries without placing a new order.",
+        "Guarded cart commands",
+        "cart",
+        "Expose cart inspection and mutations as a separately named, guarded command family rather than mixing them into search/menu reads."
+      ],
+      "path": "library/commerce/doordash",
+      "printer": "bricenice17",
+      "printer_name": "bricenice17",
+      "creator": {
+        "handle": "bricenice17",
+        "name": "bricenice17"
+      },
+      "mcp": {
+        "binary": "doordash-pp-mcp",
+        "transports": [
+          "stdio"
+        ],
+        "tool_count": 19,
+        "public_tool_count": 0,
+        "auth_type": "cookie",
+        "env_vars": [],
+        "mcp_ready": "partial",
         "spec_format": "internal"
       }
     },
@@ -1965,6 +2574,10 @@
       "path": "library/devices/dreo",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "dreo-pp-mcp",
         "transports": [
@@ -1978,6 +2591,68 @@
           "DREO_USERNAME",
           "DREO_PASSWORD"
         ],
+        "mcp_ready": "full",
+        "spec_format": "internal"
+      }
+    },
+    {
+      "name": "drudgereport",
+      "category": "media-and-entertainment",
+      "api": "Drudge Report",
+      "description": "Drudge Report in your terminal, with the editorial signal (splash, red, slot, tenure) the live page broadcasts but...",
+      "search_terms": [
+        "drudgereport",
+        "Drudge Report",
+        "drudgereport-pp-cli",
+        "Drudge Report in your terminal, with the editorial signal (splash, red, slot, tenure) the live page broadcasts but no other scraper preserves.",
+        "Splash now",
+        "splash",
+        "Just the current center-slot splash headline with image, outbound URL, red flag, and how long it has been on splash.",
+        "Breaking (red items)",
+        "breaking",
+        "Every headline currently set in red by Drudge's editor, ordered by slot importance.",
+        "Ranked headlines",
+        "headlines",
+        "All current headlines ranked by composite editorial weight (slot + red + image), not by chronology.",
+        "Promotions and demotions since last fetch",
+        "tail",
+        "Slot transitions and color changes between consecutive snapshots: promoted to splash, demoted from splash, went red, disappeared, appeared.",
+        "Splash tenure",
+        "tenure",
+        "How long the current splash has been the splash, plus the all-time longest-tenured splash leaderboard.",
+        "Source leaderboard with deltas",
+        "sources",
+        "Outbound-domain frequency leaderboard over a window with rising/falling delta vs the prior window, optionally crosstabbed by slot.",
+        "On-this-date",
+        "on-date",
+        "Reconstruct Drudge at any past timestamp the CLI has observed: splash, red items, ranked headlines as of that moment.",
+        "Editorial-bent index",
+        "bent",
+        "Ratio of red items by outbound domain over a window: which outlets Drudge tends to break vs which he tends to merely column.",
+        "Story timeline",
+        "story",
+        "Every slot_event for one story_id ordered by timestamp: when it appeared, where it moved, when it went red, when it dropped, total tenure.",
+        "Weekly digest",
+        "digest",
+        "One-pager: splash count, longest-tenured splash, top 5 outbound domains, biggest red-surge stories over the week."
+      ],
+      "path": "library/media-and-entertainment/drudgereport",
+      "printer": "mvanhorn",
+      "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
+      "mcp": {
+        "binary": "drudgereport-pp-mcp",
+        "transports": [
+          "stdio",
+          "http"
+        ],
+        "tool_count": 2,
+        "public_tool_count": 2,
+        "auth_type": "none",
+        "env_vars": [],
         "mcp_ready": "full",
         "spec_format": "internal"
       }
@@ -2036,6 +2711,10 @@
       "path": "library/marketing/dub",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "dub-pp-mcp",
         "transports": [
@@ -2078,6 +2757,10 @@
       "path": "library/commerce/ebay",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
       "mcp": {
         "binary": "ebay-pp-mcp",
         "transports": [
@@ -2135,7 +2818,11 @@
       ],
       "path": "library/other/edgar",
       "printer": "magoo242",
-      "printer_name": "magoo242"
+      "printer_name": "magoo242",
+      "creator": {
+        "handle": "magoo242",
+        "name": "magoo242"
+      }
     },
     {
       "name": "elevenlabs",
@@ -2161,6 +2848,10 @@
       "path": "library/ai/elevenlabs",
       "printer": "cathrynlavery",
       "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathrynlavery",
+        "name": "Cathryn Lavery"
+      },
       "mcp": {
         "binary": "elevenlabs-pp-mcp",
         "transports": [
@@ -2174,6 +2865,46 @@
         ],
         "mcp_ready": "full",
         "spec_format": "openapi3"
+      }
+    },
+    {
+      "name": "elezioni-sicilia",
+      "category": "other",
+      "api": "Elezioni Sicilia",
+      "description": "Dati elettorali siciliani da riga di comando — senza copiare tabelle HTML.",
+      "search_terms": [
+        "elezioni-sicilia",
+        "Elezioni Sicilia",
+        "elezioni-sicilia-pp-cli",
+        "Dati elettorali comunali siciliani da riga di comando — affluenza, candidati, liste, risultati in JSON o tabella.",
+        "Confronto storico",
+        "storico",
+        "Confronta affluenza, voti e candidati di uno stesso comune in tutti gli anni disponibili (2009-2026).",
+        "Riepilogo regionale",
+        "riepilogo",
+        "Mostra affluenza e stato scrutini per tutte le 9 province siciliane in un unico output strutturato.",
+        "Monitoraggio scrutini",
+        "watch",
+        "Polling periodico dello stato scrutini per tutti i comuni, con alert su avanzamento."
+      ],
+      "path": "library/other/elezioni-sicilia",
+      "printer": "aborruso",
+      "printer_name": "aborruso",
+      "creator": {
+        "handle": "aborruso",
+        "name": "aborruso"
+      },
+      "mcp": {
+        "binary": "elezioni-sicilia-pp-mcp",
+        "transports": [
+          "stdio"
+        ],
+        "tool_count": 6,
+        "public_tool_count": 6,
+        "auth_type": "none",
+        "env_vars": [],
+        "mcp_ready": "full",
+        "spec_format": "internal"
       }
     },
     {
@@ -2213,6 +2944,10 @@
       "path": "library/marketing/emailoctopus",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "emailoctopus-pp-mcp",
         "transports": [
@@ -2240,6 +2975,10 @@
       "path": "library/media-and-entertainment/espn",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
       "mcp": {
         "binary": "espn-pp-mcp",
         "transports": [
@@ -2274,6 +3013,10 @@
       "path": "library/productivity/etherpad",
       "printer": "JohnMcLear",
       "printer_name": "John McLear",
+      "creator": {
+        "handle": "JohnMcLear",
+        "name": "John McLear"
+      },
       "mcp": {
         "binary": "etherpad-pp-mcp",
         "transports": [
@@ -2328,6 +3071,10 @@
       "path": "library/sales-and-crm/eu-tenders",
       "printer": "m91michel",
       "printer_name": "Mathias Michel",
+      "creator": {
+        "handle": "m91michel",
+        "name": "Mathias Michel"
+      },
       "mcp": {
         "binary": "eu-tenders-pp-mcp",
         "transports": [
@@ -2381,6 +3128,10 @@
       "path": "library/media-and-entertainment/eventbrite",
       "printer": "vinnyp",
       "printer_name": "Vinny Pasceri",
+      "creator": {
+        "handle": "vinnyp",
+        "name": "Vinny Pasceri"
+      },
       "mcp": {
         "binary": "eventbrite-pp-mcp",
         "transports": [
@@ -2441,6 +3192,10 @@
       "path": "library/payments/exchangerate-api",
       "printer": "vinnyp",
       "printer_name": "Vinny Pasceri",
+      "creator": {
+        "handle": "vinnyp",
+        "name": "Vinny Pasceri"
+      },
       "mcp": {
         "binary": "exchangerate-api-pp-mcp",
         "transports": [
@@ -2485,6 +3240,10 @@
       "path": "library/commerce/facebook-marketplace",
       "printer": "cathrynlavery",
       "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathrynlavery",
+        "name": "Cathryn Lavery"
+      },
       "mcp": {
         "binary": "facebook-marketplace-pp-mcp",
         "transports": [
@@ -2539,6 +3298,10 @@
       "path": "library/productivity/fathom",
       "printer": "neektza",
       "printer_name": "Nikica Jokic",
+      "creator": {
+        "handle": "neektza",
+        "name": "Nikica Jokic"
+      },
       "mcp": {
         "binary": "fathom-pp-mcp",
         "transports": [
@@ -2606,6 +3369,10 @@
       "path": "library/commerce/fedex",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "fedex-pp-mcp",
         "transports": [
@@ -2659,6 +3426,10 @@
       "path": "library/productivity/figma",
       "printer": "giacaglia",
       "printer_name": "Giuliano Giacaglia",
+      "creator": {
+        "handle": "giacaglia",
+        "name": "Giuliano Giacaglia"
+      },
       "mcp": {
         "binary": "figma-pp-mcp",
         "transports": [
@@ -2702,6 +3473,10 @@
       "path": "library/developer-tools/firecrawl",
       "printer": "hnshah",
       "printer_name": "Hiten Shah",
+      "creator": {
+        "handle": "hnshah",
+        "name": "Hiten Shah"
+      },
       "mcp": {
         "binary": "firecrawl-pp-mcp",
         "transports": [
@@ -2753,6 +3528,10 @@
       "path": "library/productivity/fireflies",
       "printer": "neektza",
       "printer_name": "Nikica Jokic",
+      "creator": {
+        "handle": "neektza",
+        "name": "Nikica Jokic"
+      },
       "mcp": {
         "binary": "fireflies-pp-mcp",
         "transports": [
@@ -2781,6 +3560,10 @@
       "path": "library/travel/flight-goat",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
       "mcp": {
         "binary": "flight-goat-pp-mcp",
         "transports": [
@@ -2829,6 +3612,10 @@
       "path": "library/food-and-dining/food52",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "food52-pp-mcp",
         "transports": [
@@ -2884,6 +3671,10 @@
       "path": "library/productivity/freshservice",
       "printer": "mark-van-de-ven",
       "printer_name": "Mark van de Ven",
+      "creator": {
+        "handle": "mark-van-de-ven",
+        "name": "Mark van de Ven"
+      },
       "mcp": {
         "binary": "freshservice-pp-mcp",
         "transports": [
@@ -2945,6 +3736,10 @@
       "path": "library/sales-and-crm/gohighlevel",
       "printer": "jenwilliams-eng",
       "printer_name": "Jen Williams",
+      "creator": {
+        "handle": "jenwilliams-eng",
+        "name": "Jen Williams"
+      },
       "mcp": {
         "binary": "gohighlevel-pp-mcp",
         "transports": [
@@ -2983,6 +3778,10 @@
       "path": "library/marketing/google-ads",
       "printer": "cathrynlavery",
       "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathrynlavery",
+        "name": "Cathryn Lavery"
+      },
       "mcp": {
         "binary": "google-ads-pp-mcp",
         "transports": [
@@ -3020,6 +3819,10 @@
       "path": "library/media-and-entertainment/google-photos",
       "printer": "cathrynlavery",
       "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathrynlavery",
+        "name": "Cathryn Lavery"
+      },
       "mcp": {
         "binary": "google-photos-pp-mcp",
         "transports": [
@@ -3082,7 +3885,11 @@
       ],
       "path": "library/marketing/google-search-console",
       "printer": "bossriceshark",
-      "printer_name": "Matt"
+      "printer_name": "Matt",
+      "creator": {
+        "handle": "bossriceshark",
+        "name": "Matt"
+      }
     },
     {
       "name": "granola",
@@ -3129,6 +3936,10 @@
       "path": "library/productivity/granola",
       "printer": "dstevens",
       "printer_name": "Damien Stevens",
+      "creator": {
+        "handle": "dstevens",
+        "name": "Damien Stevens"
+      },
       "mcp": {
         "binary": "granola-pp-mcp",
         "transports": [
@@ -3142,6 +3953,52 @@
         ],
         "mcp_ready": "full",
         "spec_format": "openapi3"
+      }
+    },
+    {
+      "name": "gravitus",
+      "category": "other",
+      "api": "Gravitus",
+      "description": "The only CLI that syncs your Gravitus strength data into your training dashboard.",
+      "search_terms": [
+        "gravitus",
+        "gravitus-pp-cli",
+        "Dashboard Sync",
+        "sync",
+        "Sync all Gravitus workouts into your training dashboard's SQLite database — writes LiftingSession records in the exact Prisma schema format with auth, pagination, and incremental support.",
+        "Data Export",
+        "export",
+        "Export your complete Gravitus training history to CSV or JSON — the first and only way to get your data out of Gravitus.",
+        "Plateau Detection",
+        "exercises plateau",
+        "Identifies exercises where estimated 1RM hasn't improved in N weeks — alert-style output for the dashboard coaching panel.",
+        "Weekly Volume",
+        "stats volume",
+        "Weekly total lifting volume (lbs) aggregated from all synced sessions — the same metric the dashboard LiftingSection displays.",
+        "Personal Records",
+        "exercises prs",
+        "All-time PRs across every exercise, extracted from PR markers on workout pages."
+      ],
+      "path": "library/other/gravitus",
+      "printer": "azaaron",
+      "printer_name": "mvanhorn",
+      "creator": {
+        "handle": "azaaron",
+        "name": "mvanhorn"
+      },
+      "mcp": {
+        "binary": "gravitus-pp-mcp",
+        "transports": [
+          "stdio"
+        ],
+        "tool_count": 4,
+        "public_tool_count": 1,
+        "auth_type": "cookie",
+        "env_vars": [
+          "GRAVITUS_SESSION_ID"
+        ],
+        "mcp_ready": "partial",
+        "spec_format": "internal"
       }
     },
     {
@@ -3179,6 +4036,10 @@
       "path": "library/other/greatclips",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
       "mcp": {
         "binary": "greatclips-pp-mcp",
         "transports": [
@@ -3218,6 +4079,10 @@
       "path": "library/commerce/gumroad",
       "printer": "bheemreddy181",
       "printer_name": "Bheem Reddy",
+      "creator": {
+        "handle": "bheemreddy181",
+        "name": "Bheem Reddy"
+      },
       "mcp": {
         "binary": "gumroad-pp-mcp",
         "transports": [
@@ -3275,6 +4140,10 @@
       "path": "library/media-and-entertainment/hackernews",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "hackernews-pp-mcp",
         "transports": [
@@ -3318,6 +4187,10 @@
       "path": "library/commerce/harris-teeter",
       "printer": "jwmoss",
       "printer_name": "Jonathan Moss",
+      "creator": {
+        "handle": "jwmoss",
+        "name": "Jonathan Moss"
+      },
       "mcp": {
         "binary": "harris-teeter-pp-mcp",
         "transports": [
@@ -3371,6 +4244,10 @@
       "path": "library/devices/hayward-omnilogic",
       "printer": "rob-coco",
       "printer_name": "Rob Zehner",
+      "creator": {
+        "handle": "rob-coco",
+        "name": "Rob Zehner"
+      },
       "mcp": {
         "binary": "hayward-omnilogic-pp-mcp",
         "transports": [
@@ -3379,6 +4256,41 @@
         "tool_count": 17,
         "public_tool_count": 0,
         "auth_type": "api_key",
+        "env_vars": [],
+        "mcp_ready": "full",
+        "spec_format": "internal"
+      }
+    },
+    {
+      "name": "hotel-goat",
+      "category": "travel",
+      "api": "Google Hotels",
+      "description": "Every Google Hotels feature, plus per-OTA price breakdown, local price-drift history, brand-loyalty filters",
+      "search_terms": [
+        "hotel-goat",
+        "Google Hotels",
+        "hotel-goat-pp-cli",
+        "Every Google Hotels feature, plus per-OTA price breakdown, local price-drift history, brand-loyalty filters, and date-flex windowing no other tool has.",
+        "Agent-composable nested JSON via --select dotted paths",
+        "hotels",
+        "Dotted-path selection through nested results.prices[], results.booking_urls, results.images[]. Returns only the fields the agent needs."
+      ],
+      "path": "library/travel/hotel-goat",
+      "printer": "kothari-nikunj",
+      "printer_name": "kothari-nikunj",
+      "creator": {
+        "handle": "kothari-nikunj",
+        "name": "kothari-nikunj"
+      },
+      "mcp": {
+        "binary": "hotel-goat-pp-mcp",
+        "transports": [
+          "stdio",
+          "http"
+        ],
+        "tool_count": 2,
+        "public_tool_count": 2,
+        "auth_type": "none",
         "env_vars": [],
         "mcp_ready": "full",
         "spec_format": "internal"
@@ -3416,6 +4328,10 @@
       "path": "library/travel/hotel-tonight",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "hotel-tonight-pp-mcp",
         "transports": [
@@ -3454,7 +4370,17 @@
       ],
       "path": "library/media-and-entertainment/icloud",
       "printer": "matysanchez",
-      "printer_name": "Matias Sanchez Moises"
+      "printer_name": "Matias Sanchez Moises",
+      "creator": {
+        "handle": "matysanchez",
+        "name": "Matias Sanchez Moises"
+      },
+      "contributors": [
+        {
+          "handle": "mvanhorn",
+          "name": "Matt Van Horn"
+        }
+      ]
     },
     {
       "name": "instacart",
@@ -3468,7 +4394,60 @@
       ],
       "path": "library/commerce/instacart",
       "printer": "mvanhorn",
-      "printer_name": "Matt Van Horn"
+      "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
+      "contributors": [
+        {
+          "handle": "omarshahine",
+          "name": "Omar Shahine"
+        }
+      ]
+    },
+    {
+      "name": "intercom",
+      "category": "sales-and-crm",
+      "api": "Intercom",
+      "description": "Every Intercom resource as a typed CLI with offline sync and EU/AU regions.",
+      "search_terms": [
+        "intercom",
+        "intercom-pp-cli",
+        "Every Intercom resource as a typed CLI with offline sync and EU/AU regions.",
+        "Incident-tag dry-run",
+        "conversations incident-tag",
+        "Tag every conversation mentioning a phrase in a time window with one safe-by-default command.",
+        "Articles git round-trip",
+        "articles pull",
+        "Flatten every help-center article into a markdown tree you can edit in git, then push changes back.",
+        "Contact 360",
+        "One nested payload joining a contact across companies, conversations, tickets, notes, and tags.",
+        "SLA analytics",
+        "conversations sla",
+        "First-response and resolution-time metrics grouped by team or admin, computed over the local store."
+      ],
+      "path": "library/sales-and-crm/intercom",
+      "printer": "rob-coco",
+      "printer_name": "Rob Zehner",
+      "creator": {
+        "handle": "rob-coco",
+        "name": "Rob Zehner"
+      },
+      "mcp": {
+        "binary": "intercom-pp-mcp",
+        "transports": [
+          "stdio"
+        ],
+        "tool_count": 133,
+        "public_tool_count": 0,
+        "auth_type": "bearer_token",
+        "env_vars": [
+          "INTERCOM_ACCESS_TOKEN"
+        ],
+        "mcp_ready": "full",
+        "spec_format": "openapi3"
+      }
     },
     {
       "name": "jimmy-johns",
@@ -3493,6 +4472,10 @@
       "path": "library/food-and-dining/jimmy-johns",
       "printer": "omarshahine",
       "printer_name": "Omar Shahine",
+      "creator": {
+        "handle": "omarshahine",
+        "name": "Omar Shahine"
+      },
       "mcp": {
         "binary": "jimmy-johns-pp-mcp",
         "transports": [
@@ -3535,7 +4518,60 @@
       ],
       "path": "library/project-management/jira",
       "printer": "neektza",
-      "printer_name": "Nikica Jokic"
+      "printer_name": "Nikica Jokic",
+      "creator": {
+        "handle": "neektza",
+        "name": "Nikica Jokic"
+      }
+    },
+    {
+      "name": "jobber",
+      "category": "sales-and-crm",
+      "api": "Jobber",
+      "description": "Jobber API surface as a read-only CLI and MCP peer (printing-press generated).",
+      "search_terms": [
+        "jobber",
+        "jobber-pp-cli",
+        "AR aging",
+        "Aged AR by client with 0-30/31-60/61-90/90+ buckets and per-bucket totals — every advisor's first question, offline and instantly.",
+        "Invoice payment trace",
+        "invoices trace",
+        "Per-invoice ledger comparing total, payments_total, deposit_amount, and the sum of payment records. --mismatched flags drift > $0.005.",
+        "Snapshot diff",
+        "Diff two labeled SQLite snapshots: new clients, status transitions, newly paid invoices, per-client open-AR deltas.",
+        "Full-text search",
+        "search",
+        "FTS5 search across every synced resource — clients, jobs, invoices, properties, quotes, visits, payment records — with no live API hit.",
+        "Read-only ad-hoc SQL",
+        "sql",
+        "Read-only ad-hoc SQL against the local store (write tokens rejected at the CLI layer + sqlite mode=ro) for anything the curated commands don't answer."
+      ],
+      "path": "library/sales-and-crm/jobber",
+      "printer": "melanson633",
+      "printer_name": "melanson633",
+      "creator": {
+        "handle": "melanson633",
+        "name": "melanson633"
+      },
+      "mcp": {
+        "binary": "jobber-pp-mcp",
+        "transports": [
+          "stdio"
+        ],
+        "tool_count": 12,
+        "public_tool_count": 0,
+        "auth_type": "oauth2",
+        "env_vars": [
+          "JOBBER_CLIENT_ID",
+          "JOBBER_CLIENT_SECRET",
+          "JOBBER_CALLBACK_URL",
+          "JOBBER_ACCESS_TOKEN",
+          "JOBBER_REFRESH_TOKEN",
+          "JOBBER_GRAPHQL_VERSION"
+        ],
+        "mcp_ready": "full",
+        "spec_format": "internal-yaml"
+      }
     },
     {
       "name": "kalshi",
@@ -3576,6 +4612,10 @@
       "path": "library/payments/kalshi",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "kalshi-pp-mcp",
         "transports": [
@@ -3616,6 +4656,10 @@
       "path": "library/marketing/kit",
       "printer": "cathrynlavery",
       "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathrynlavery",
+        "name": "Cathryn Lavery"
+      },
       "mcp": {
         "binary": "kit-pp-mcp",
         "transports": [
@@ -3671,6 +4715,10 @@
       "path": "library/marketing/klaviyo",
       "printer": "cathrynlavery",
       "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathrynlavery",
+        "name": "Cathryn Lavery"
+      },
       "mcp": {
         "binary": "klaviyo-pp-mcp",
         "transports": [
@@ -3712,7 +4760,11 @@
       ],
       "path": "library/education/lawhub",
       "printer": "nolan",
-      "printer_name": "Nolan McCafferty"
+      "printer_name": "Nolan McCafferty",
+      "creator": {
+        "handle": "nolan",
+        "name": "Nolan McCafferty"
+      }
     },
     {
       "name": "linear",
@@ -3764,6 +4816,10 @@
       "path": "library/project-management/linear",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
       "mcp": {
         "binary": "linear-pp-mcp",
         "transports": [
@@ -3816,6 +4872,10 @@
       "path": "library/commerce/loopnet",
       "printer": "melanson633",
       "printer_name": "melanson633",
+      "creator": {
+        "handle": "melanson633",
+        "name": "melanson633"
+      },
       "mcp": {
         "binary": "loopnet-pp-mcp",
         "transports": [
@@ -3871,6 +4931,10 @@
       "path": "library/payments/lunch-money",
       "printer": "salmonumbrella",
       "printer_name": "salmonumbrella",
+      "creator": {
+        "handle": "salmonumbrella",
+        "name": "salmonumbrella"
+      },
       "mcp": {
         "binary": "lunch-money-pp-mcp",
         "transports": [
@@ -3924,6 +4988,10 @@
       "path": "library/marketing/mailchimp",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "mailchimp-pp-mcp",
         "transports": [
@@ -3964,6 +5032,10 @@
       "path": "library/media-and-entertainment/marginalrevolution",
       "printer": "hinuri",
       "printer_name": "Nuri Chang",
+      "creator": {
+        "handle": "hinuri",
+        "name": "Nuri Chang"
+      },
       "mcp": {
         "binary": "marginalrevolution-pp-mcp",
         "transports": [
@@ -4014,7 +5086,11 @@
       ],
       "path": "library/productivity/marianatek",
       "printer": "salmonumbrella",
-      "printer_name": "salmonumbrella"
+      "printer_name": "salmonumbrella",
+      "creator": {
+        "handle": "salmonumbrella",
+        "name": "salmonumbrella"
+      }
     },
     {
       "name": "mercury",
@@ -4038,6 +5114,10 @@
       "path": "library/payments/mercury",
       "printer": "cathrynlavery",
       "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathrynlavery",
+        "name": "Cathryn Lavery"
+      },
       "mcp": {
         "binary": "mercury-pp-mcp",
         "transports": [
@@ -4051,6 +5131,48 @@
         ],
         "mcp_ready": "full",
         "spec_format": "openapi3"
+      }
+    },
+    {
+      "name": "midjourney",
+      "category": "ai",
+      "api": "Midjourney",
+      "description": "Inspect Midjourney jobs, queue, folders, and discovery feeds from the terminal",
+      "search_terms": [
+        "midjourney",
+        "midjourney-pp-cli",
+        "Inspect Midjourney jobs, queue, folders, and discovery feeds from the terminal",
+        "Submit Midjourney image jobs",
+        "imagine",
+        "Submit Midjourney imagine jobs through the browser-observed /api/submit-jobs flow, including model/version, style, reference, draft, and tuning flags.",
+        "Rerun existing jobs",
+        "rerun",
+        "Submit the observed Midjourney reroll payload for an existing job ID.",
+        "Export rendered images",
+        "download",
+        "Export rendered Midjourney job images through Chrome CDP when direct CDN fetches are blocked by Cloudflare or CORS."
+      ],
+      "path": "library/ai/midjourney",
+      "printer": "dave-agent-cerebro",
+      "printer_name": "Dave Fano",
+      "creator": {
+        "handle": "dave-agent-cerebro",
+        "name": "Dave Fano"
+      },
+      "mcp": {
+        "binary": "midjourney-pp-mcp",
+        "transports": [
+          "stdio",
+          "http"
+        ],
+        "tool_count": 12,
+        "public_tool_count": 0,
+        "auth_type": "api_key",
+        "env_vars": [
+          "MIDJOURNEY_COOKIE_HEADER"
+        ],
+        "mcp_ready": "full",
+        "spec_format": "internal"
       }
     },
     {
@@ -4091,7 +5213,11 @@
       ],
       "path": "library/media-and-entertainment/mobalytics-lol",
       "printer": "QuantumGlitch",
-      "printer_name": "QuantumGlitch"
+      "printer_name": "QuantumGlitch",
+      "creator": {
+        "handle": "QuantumGlitch",
+        "name": "QuantumGlitch"
+      }
     },
     {
       "name": "monarch-money",
@@ -4112,7 +5238,11 @@
       ],
       "path": "library/payments/monarch-money",
       "printer": "count",
-      "printer_name": "Count"
+      "printer_name": "Count",
+      "creator": {
+        "handle": "count",
+        "name": "Count"
+      }
     },
     {
       "name": "movie-goat",
@@ -4151,6 +5281,10 @@
       "path": "library/media-and-entertainment/movie-goat",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "movie-goat-pp-mcp",
         "transports": [
@@ -4204,6 +5338,10 @@
       "path": "library/social-and-messaging/multimail",
       "printer": "H179922",
       "printer_name": "H179922",
+      "creator": {
+        "handle": "H179922",
+        "name": "H179922"
+      },
       "mcp": {
         "binary": "multimail-pp-mcp",
         "transports": [
@@ -4248,6 +5386,10 @@
       "path": "library/productivity/myfitnesspal",
       "printer": "nickscarabosio",
       "printer_name": "Nick Scarabosio",
+      "creator": {
+        "handle": "nickscarabosio",
+        "name": "Nick Scarabosio"
+      },
       "mcp": {
         "binary": "myfitnesspal-pp-mcp",
         "transports": [
@@ -4283,6 +5425,10 @@
       "path": "library/developer-tools/namecheap",
       "printer": "cathryn-lavery",
       "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathryn-lavery",
+        "name": "Cathryn Lavery"
+      },
       "mcp": {
         "binary": "namecheap-pp-mcp",
         "transports": [
@@ -4341,6 +5487,10 @@
       "path": "library/media-and-entertainment/nasa-images",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "nasa-images-pp-mcp",
         "transports": [
@@ -4373,6 +5523,10 @@
       "path": "library/productivity/notion",
       "printer": "neektza",
       "printer_name": "Nikica Jokic",
+      "creator": {
+        "handle": "neektza",
+        "name": "Nikica Jokic"
+      },
       "mcp": {
         "binary": "notion-pp-mcp",
         "transports": [
@@ -4425,7 +5579,11 @@
       ],
       "path": "library/developer-tools/nse-india",
       "printer": "lavs9",
-      "printer_name": "Mayank Lavania"
+      "printer_name": "Mayank Lavania",
+      "creator": {
+        "handle": "lavs9",
+        "name": "Mayank Lavania"
+      }
     },
     {
       "name": "numista",
@@ -4469,6 +5627,10 @@
       "path": "library/other/numista",
       "printer": "vinnyp",
       "printer_name": "Vinny Pasceri",
+      "creator": {
+        "handle": "vinnyp",
+        "name": "Vinny Pasceri"
+      },
       "mcp": {
         "binary": "numista-pp-mcp",
         "transports": [
@@ -4506,6 +5668,10 @@
       "path": "library/developer-tools/nvd",
       "printer": "hnshah",
       "printer_name": "Hiten Shah",
+      "creator": {
+        "handle": "hnshah",
+        "name": "Hiten Shah"
+      },
       "mcp": {
         "binary": "nvd-pp-mcp",
         "transports": [
@@ -4564,6 +5730,10 @@
       "path": "library/productivity/nylas",
       "printer": "natekettles",
       "printer_name": "Nathan Kettles",
+      "creator": {
+        "handle": "natekettles",
+        "name": "Nathan Kettles"
+      },
       "mcp": {
         "binary": "nylas-pp-mcp",
         "transports": [
@@ -4611,6 +5781,10 @@
       "path": "library/productivity/obsidian",
       "printer": "DrDriftwood",
       "printer_name": "Angelo Pullen",
+      "creator": {
+        "handle": "DrDriftwood",
+        "name": "Angelo Pullen"
+      },
       "mcp": {
         "binary": "obsidian-pp-mcp",
         "transports": [
@@ -4658,6 +5832,10 @@
       "path": "library/other/open-meteo",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "open-meteo-pp-mcp",
         "transports": [
@@ -4699,6 +5877,10 @@
       "path": "library/other/openalex",
       "printer": "hiten-shah",
       "printer_name": "Hiten Shah",
+      "creator": {
+        "handle": "hiten-shah",
+        "name": "Hiten Shah"
+      },
       "mcp": {
         "binary": "openalex-pp-mcp",
         "transports": [
@@ -4746,6 +5928,10 @@
       "path": "library/developer-tools/openfda",
       "printer": "H179922",
       "printer_name": "H179922",
+      "creator": {
+        "handle": "H179922",
+        "name": "H179922"
+      },
       "mcp": {
         "binary": "openfda-pp-mcp",
         "transports": [
@@ -4807,7 +5993,11 @@
       ],
       "path": "library/developer-tools/openipa",
       "printer": "aborruso",
-      "printer_name": "aborruso"
+      "printer_name": "aborruso",
+      "creator": {
+        "handle": "aborruso",
+        "name": "aborruso"
+      }
     },
     {
       "name": "openrouter",
@@ -4845,7 +6035,11 @@
       ],
       "path": "library/ai/openrouter",
       "printer": "rvdlaar",
-      "printer_name": "Rick van de Laar"
+      "printer_name": "Rick van de Laar",
+      "creator": {
+        "handle": "rvdlaar",
+        "name": "Rick van de Laar"
+      }
     },
     {
       "name": "opensnow",
@@ -4883,6 +6077,10 @@
       "path": "library/productivity/opensnow",
       "printer": "davemorin",
       "printer_name": "Dave Morin",
+      "creator": {
+        "handle": "davemorin",
+        "name": "Dave Morin"
+      },
       "mcp": {
         "binary": "opensnow-pp-mcp",
         "transports": [
@@ -4933,6 +6131,10 @@
       "path": "library/food-and-dining/ordertogo",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
       "mcp": {
         "binary": "ordertogo-pp-mcp",
         "transports": [
@@ -4984,6 +6186,10 @@
       "path": "library/productivity/outlook-calendar",
       "printer": "brennaman",
       "printer_name": "Paul Brennaman",
+      "creator": {
+        "handle": "brennaman",
+        "name": "Paul Brennaman"
+      },
       "mcp": {
         "binary": "outlook-calendar-pp-mcp",
         "transports": [
@@ -5049,6 +6255,10 @@
       "path": "library/productivity/outlook-email",
       "printer": "brennaman",
       "printer_name": "Paul Brennaman",
+      "creator": {
+        "handle": "brennaman",
+        "name": "Paul Brennaman"
+      },
       "mcp": {
         "binary": "outlook-email-pp-mcp",
         "transports": [
@@ -5102,6 +6312,10 @@
       "path": "library/food-and-dining/pagliacci",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "pagliacci-pp-mcp",
         "transports": [
@@ -5147,6 +6361,10 @@
       "path": "library/other/pcgs",
       "printer": "vinnyp",
       "printer_name": "Vinny Pasceri",
+      "creator": {
+        "handle": "vinnyp",
+        "name": "Vinny Pasceri"
+      },
       "mcp": {
         "binary": "pcgs-pp-mcp",
         "transports": [
@@ -5209,7 +6427,11 @@
       ],
       "path": "library/developer-tools/pdok-location",
       "printer": "markvandeven",
-      "printer_name": "markvandeven"
+      "printer_name": "markvandeven",
+      "creator": {
+        "handle": "markvandeven",
+        "name": "markvandeven"
+      }
     },
     {
       "name": "podcast-goat",
@@ -5249,6 +6471,10 @@
       "path": "library/media-and-entertainment/podcast-goat",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
       "mcp": {
         "binary": "podcast-goat-pp-mcp",
         "transports": [
@@ -5300,6 +6526,10 @@
       "path": "library/media-and-entertainment/podscan",
       "printer": "gregvanhorn",
       "printer_name": "Greg Van Horn",
+      "creator": {
+        "handle": "gregvanhorn",
+        "name": "Greg Van Horn"
+      },
       "mcp": {
         "binary": "podscan-pp-mcp",
         "transports": [
@@ -5354,6 +6584,10 @@
       "path": "library/travel/pointhound",
       "printer": "salmonumbrella",
       "printer_name": "salmonumbrella",
+      "creator": {
+        "handle": "salmonumbrella",
+        "name": "salmonumbrella"
+      },
       "mcp": {
         "binary": "pointhound-pp-mcp",
         "transports": [
@@ -5418,6 +6652,10 @@
       "path": "library/media-and-entertainment/pokeapi",
       "printer": "hnshah",
       "printer_name": "Hiten Shah",
+      "creator": {
+        "handle": "hnshah",
+        "name": "Hiten Shah"
+      },
       "mcp": {
         "binary": "pokeapi-pp-mcp",
         "transports": [
@@ -5453,6 +6691,10 @@
       "path": "library/payments/pop",
       "printer": "mircobabini",
       "printer_name": "Mirco Babini",
+      "creator": {
+        "handle": "mircobabini",
+        "name": "Mirco Babini"
+      },
       "mcp": {
         "binary": "pop-pp-mcp",
         "transports": [
@@ -5503,6 +6745,10 @@
       "path": "library/developer-tools/posthog",
       "printer": "riteshtiwari",
       "printer_name": "riteshtiwari",
+      "creator": {
+        "handle": "riteshtiwari",
+        "name": "riteshtiwari"
+      },
       "mcp": {
         "binary": "posthog-pp-mcp",
         "transports": [
@@ -5557,6 +6803,10 @@
       "path": "library/developer-tools/postman-explore",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "postman-explore-pp-mcp",
         "transports": [
@@ -5566,6 +6816,59 @@
         "public_tool_count": 8,
         "auth_type": "none",
         "env_vars": [],
+        "mcp_ready": "full",
+        "spec_format": "openapi3"
+      }
+    },
+    {
+      "name": "printify",
+      "category": "commerce",
+      "api": "Printify",
+      "description": "Create and audit Printify products with manifest-driven image uploads, personalization checks, and local proofing.",
+      "search_terms": [
+        "printify",
+        "printify-pp-cli",
+        "Create and audit Printify products with manifest-driven image uploads, personalization checks, and local proofing.",
+        "Personalization Coverage Audit",
+        "personalization-audit",
+        "Audit a product for documented personalization placeholder fields, missing text/image setup, and unsupported browser-only gaps.",
+        "Placement Matrix",
+        "placement-matrix",
+        "Show variant, print-area, placeholder, uploaded image, x/y/scale/angle, and missing-placement rows for a product.",
+        "Catalog Margin Matrix",
+        "catalog-margin-matrix",
+        "Join catalog variants and shipping data to estimate per-variant cost and margin at a target retail price.",
+        "Product Manifest Drift",
+        "product-drift",
+        "Compare an intended product manifest against the current Printify product payload after create or update.",
+        "Personalized Batch Manifest Compiler",
+        "personalization-batch",
+        "Expand a reusable product manifest and CSV rows into per-product manifests using documented image and text placeholder fields.",
+        "Asset Reuse Map",
+        "asset-reuse",
+        "List uploaded images, where each is used, unused uploads, and products sharing the same artwork.",
+        "Fulfillment Risk Scan",
+        "fulfillment-risk",
+        "Flag open orders tied to risky product, variant, publish, or shipment states."
+      ],
+      "path": "library/commerce/printify",
+      "printer": "horknfbr",
+      "printer_name": "horknfbr",
+      "creator": {
+        "handle": "horknfbr",
+        "name": "horknfbr"
+      },
+      "mcp": {
+        "binary": "printify-pp-mcp",
+        "transports": [
+          "stdio"
+        ],
+        "tool_count": 40,
+        "public_tool_count": 0,
+        "auth_type": "bearer_token",
+        "env_vars": [
+          "PRINTIFY_BEARER_AUTH"
+        ],
         "mcp_ready": "full",
         "spec_format": "openapi3"
       }
@@ -5617,6 +6920,10 @@
       "path": "library/marketing/producthunt",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "producthunt-pp-mcp",
         "transports": [
@@ -5660,6 +6967,10 @@
       "path": "library/social-and-messaging/pushover",
       "printer": "twidtwid",
       "printer_name": "Todd Dailey",
+      "creator": {
+        "handle": "twidtwid",
+        "name": "Todd Dailey"
+      },
       "mcp": {
         "binary": "pushover-pp-mcp",
         "transports": [
@@ -5701,6 +7012,10 @@
       "path": "library/other/pvgis",
       "printer": "robertobissanti",
       "printer_name": "Roberto Bissanti",
+      "creator": {
+        "handle": "robertobissanti",
+        "name": "Roberto Bissanti"
+      },
       "mcp": {
         "binary": "pvgis-pp-mcp",
         "transports": [
@@ -5735,6 +7050,10 @@
       "path": "library/developer-tools/pypi",
       "printer": "hnshah",
       "printer_name": "Hiten Shah",
+      "creator": {
+        "handle": "hnshah",
+        "name": "Hiten Shah"
+      },
       "mcp": {
         "binary": "pypi-pp-mcp",
         "transports": [
@@ -5789,6 +7108,10 @@
       "path": "library/food-and-dining/rappi",
       "printer": "bobeglz",
       "printer_name": "bobe",
+      "creator": {
+        "handle": "bobeglz",
+        "name": "bobe"
+      },
       "mcp": {
         "binary": "rappi-pp-mcp",
         "transports": [
@@ -5846,6 +7169,10 @@
       "path": "library/food-and-dining/recipe-goat",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "recipe-goat-pp-mcp",
         "transports": [
@@ -5903,6 +7230,16 @@
       "path": "library/other/redfin",
       "printer": "rderwin",
       "printer_name": "rderwin",
+      "creator": {
+        "handle": "rderwin",
+        "name": "rderwin"
+      },
+      "contributors": [
+        {
+          "handle": "jwmoss",
+          "name": "Jonathan Moss"
+        }
+      ],
       "mcp": {
         "binary": "redfin-pp-mcp",
         "transports": [
@@ -5961,6 +7298,10 @@
       "path": "library/cloud/render",
       "printer": "giacaglia",
       "printer_name": "Giuliano Giacaglia",
+      "creator": {
+        "handle": "giacaglia",
+        "name": "Giuliano Giacaglia"
+      },
       "mcp": {
         "binary": "render-pp-mcp",
         "transports": [
@@ -6012,6 +7353,10 @@
       "path": "library/productivity/resend",
       "printer": "giacaglia",
       "printer_name": "Giuliano Giacaglia",
+      "creator": {
+        "handle": "giacaglia",
+        "name": "Giuliano Giacaglia"
+      },
       "mcp": {
         "binary": "resend-pp-mcp",
         "transports": [
@@ -6072,18 +7417,64 @@
       "path": "library/productivity/roam",
       "printer": "gregvanhorn",
       "printer_name": "Greg Van Horn",
+      "creator": {
+        "handle": "gregvanhorn",
+        "name": "Greg Van Horn"
+      },
       "mcp": {
-        "binary": "roam-pp-cli",
+        "binary": "roam-pp-mcp",
         "transports": [
           "stdio"
         ],
-        "tool_count": 0,
-        "public_tool_count": 0,
+        "tool_count": 85,
+        "public_tool_count": 85,
         "auth_type": "bearer",
         "env_vars": [
           "ROAM_API_KEY"
         ],
+        "mcp_ready": "full",
         "spec_format": "openapi3"
+      }
+    },
+    {
+      "name": "safari-history",
+      "category": "productivity",
+      "api": "Safari History",
+      "description": "Reverse-engineered from the hand-built safari-history-pp-cli command/data shape",
+      "search_terms": [
+        "safari-history",
+        "Safari History",
+        "safari-history-pp-cli",
+        "Query local Safari browsing history from a snapshot index; no remote API spec.",
+        "Session Timeline Reconstruction",
+        "timeline",
+        "Reconstructs session-level browsing timelines from visit-time gaps and redirect chains.",
+        "Derived Dwell Estimate",
+        "dwell",
+        "Estimates per-domain time-on-site from visit-time gaps (Safari stores no native dwell).",
+        "Navigation Graph",
+        "graph",
+        "Builds a page-node / referrer-edge navigation graph (JSON or Graphviz dot)."
+      ],
+      "path": "library/productivity/safari-history",
+      "printer": "vinnyp",
+      "printer_name": "Vinny Pasceri",
+      "creator": {
+        "handle": "vinnyp",
+        "name": "Vinny Pasceri"
+      },
+      "mcp": {
+        "binary": "safari-history-pp-mcp",
+        "transports": [
+          "stdio",
+          "http"
+        ],
+        "tool_count": 19,
+        "public_tool_count": 19,
+        "auth_type": "none",
+        "env_vars": [],
+        "mcp_ready": "full",
+        "spec_format": "sqlite"
       }
     },
     {
@@ -6138,6 +7529,10 @@
       "path": "library/developer-tools/scrape-creators",
       "printer": "adrianhorning08",
       "printer_name": "Adrian Horning",
+      "creator": {
+        "handle": "adrianhorning08",
+        "name": "Adrian Horning"
+      },
       "mcp": {
         "binary": "scrape-creators-pp-mcp",
         "transports": [
@@ -6177,6 +7572,10 @@
       "path": "library/travel/seats-aero",
       "printer": "cathrynlavery",
       "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathrynlavery",
+        "name": "Cathryn Lavery"
+      },
       "mcp": {
         "binary": "seats-aero-pp-mcp",
         "transports": [
@@ -6231,6 +7630,10 @@
       "path": "library/developer-tools/sec-edgar",
       "printer": "ChrisDrit",
       "printer_name": "Chris Drit",
+      "creator": {
+        "handle": "ChrisDrit",
+        "name": "Chris Drit"
+      },
       "mcp": {
         "binary": "sec-edgar-pp-mcp",
         "transports": [
@@ -6241,6 +7644,72 @@
         "auth_type": "api_key",
         "env_vars": [
           "SEC_EDGAR_USER_AGENT"
+        ],
+        "mcp_ready": "full",
+        "spec_format": "internal"
+      }
+    },
+    {
+      "name": "semrush",
+      "category": "marketing",
+      "api": "Semrush",
+      "description": "Every Semrush Analytics + Projects feature, plus a local SQLite store and cross-domain joins no other Semrush tool has.",
+      "search_terms": [
+        "semrush",
+        "semrush-pp-cli",
+        "Every Semrush Analytics + Projects feature, plus a local SQLite store and cross-domain joins no other Semrush tool has.",
+        "Weekly Drift Report",
+        "drift",
+        "Diff this week's domain + keyword snapshot against last week's to see what moved, without re-spending credits on the data you already pulled.",
+        "Snapshot Tag + Diff",
+        "snapshot",
+        "Tag the current local-store state of any resource (e.g. monday-baseline) and later diff any two tags to see exactly what moved between them.",
+        "Backlink Delta Since Last Sync",
+        "backlink new",
+        "Show only the referring domains and backlinks first seen in a window, so the 'did anything new link to us this week' question is a one-liner.",
+        "Budget Ledger",
+        "budget",
+        "Every API call's documented unit cost is logged locally; budget rolls up spend by day, command, resource, and projects month-end burn from the current balance probe.",
+        "Keyword Gap",
+        "Set-difference of organic keywords across two or more domains in the same database, with intersection and unique-to-each modes.",
+        "Backlink Gap",
+        "Find referring domains that link to a competitor but not to you, filtered by authority score.",
+        "Audit Triage",
+        "Rank Site Audit pages by weighted issue severity (errors x3, warnings x1, notices x0.1) so you fix the highest-impact pages first.",
+        "Position Drift",
+        "tracking drift",
+        "Window-function over Position Tracking snapshots: which keywords moved more than N positions, dropped off page 1, or entered page 1, per region and device.",
+        "Country Fan-out",
+        "domain regions",
+        "Run Domain Overview across multiple country databases in one shot, persist all rows with the database key so later cross-region drift queries work.",
+        "SERP Feature Monitor",
+        "serp-features",
+        "Time-series view of which SERP features (featured snippet, People Also Ask, video, image pack) have appeared and disappeared for a tracked keyword.",
+        "Cannibalization Detector",
+        "cannibalization",
+        "List phrases where the same domain ranks for multiple URLs (a known SEO problem) with the URLs and their respective positions.",
+        "Audit Regression Watch",
+        "audit regression",
+        "Diff the latest two Site Audit snapshots for a project: new issue IDs introduced, issues resolved, count delta per severity."
+      ],
+      "path": "library/marketing/semrush",
+      "printer": "Charles-Garrison",
+      "printer_name": "Charles Garrison",
+      "creator": {
+        "handle": "Charles-Garrison",
+        "name": "Charles Garrison"
+      },
+      "mcp": {
+        "binary": "semrush-pp-mcp",
+        "transports": [
+          "stdio",
+          "http"
+        ],
+        "tool_count": 97,
+        "public_tool_count": 0,
+        "auth_type": "api_key",
+        "env_vars": [
+          "SEMRUSH_API_KEY"
         ],
         "mcp_ready": "full",
         "spec_format": "internal"
@@ -6280,6 +7749,10 @@
       "path": "library/productivity/sendgrid",
       "printer": "natekettles",
       "printer_name": "Nathan Kettles",
+      "creator": {
+        "handle": "natekettles",
+        "name": "Nathan Kettles"
+      },
       "mcp": {
         "binary": "sendgrid-pp-mcp",
         "transports": [
@@ -6315,6 +7788,10 @@
       "path": "library/monitoring/sentry",
       "printer": "cathrynlavery",
       "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathrynlavery",
+        "name": "Cathryn Lavery"
+      },
       "mcp": {
         "binary": "sentry-pp-mcp",
         "transports": [
@@ -6380,6 +7857,10 @@
       "path": "library/sales-and-crm/servicetitan-pricebook",
       "printer": "pierc",
       "printer_name": "Pierce",
+      "creator": {
+        "handle": "pierc",
+        "name": "Pierce"
+      },
       "mcp": {
         "binary": "servicetitan-pricebook-pp-mcp",
         "transports": [
@@ -6456,6 +7937,16 @@
       "path": "library/media-and-entertainment/setlist-fm",
       "printer": "davemorin",
       "printer_name": "Dave Morin",
+      "creator": {
+        "handle": "davemorin",
+        "name": "Dave Morin"
+      },
+      "contributors": [
+        {
+          "handle": "mvanhorn",
+          "name": "Matt Van Horn"
+        }
+      ],
       "mcp": {
         "binary": "setlist-fm-pp-mcp",
         "transports": [
@@ -6520,11 +8011,51 @@
         "customers tag",
         "Add or remove tags on a Shopify customer by id.",
         "Auth Audit",
-        "Audit OAuth client_credentials setup and access-token freshness."
+        "Audit OAuth client_credentials setup and access-token freshness.",
+        "Store Daily Brief",
+        "store daily-brief",
+        "Executive store brief with revenue, top products, risk checks, and suggested next actions from the local mirror.",
+        "Store Health Audit",
+        "store audit",
+        "Score store health from refunds, fulfillment risk, shipping anomalies, and dead stock.",
+        "Growth Campaign Brief",
+        "growth campaign-brief",
+        "Generate a data-backed campaign brief from top products, VIPs, and winback opportunities.",
+        "Winback Candidates",
+        "growth winback-candidates",
+        "Rank idle customers by lifetime value and suggest winback angles.",
+        "VIP Segments",
+        "growth vip-segments",
+        "Segment high-value customers by spend, frequency, recency, and recommended action.",
+        "Fulfillment Risk Queue",
+        "ops fulfillment-risk",
+        "Find open fulfillment orders older than a threshold and classify risk.",
+        "Shipping Anomalies",
+        "ops shipping-anomalies",
+        "Find orders with free, missing, or unusually high shipping charges using synced shippingLines.",
+        "Bundle Opportunities",
+        "merchandising bundle-opportunities",
+        "Suggest bundles from co-purchase confidence and lift.",
+        "Dead Stock Actions",
+        "merchandising dead-stock-actions",
+        "Turn inventory with no recent sales into markdown or bundle actions.",
+        "Product Launch Brief",
+        "merchandising launch-brief",
+        "Build a launch/relaunch brief from product sales, inventory, and merchandising evidence."
       ],
       "path": "library/commerce/shopify",
       "printer": "cathrynlavery",
       "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathrynlavery",
+        "name": "Cathryn Lavery"
+      },
+      "contributors": [
+        {
+          "handle": "benjaminn8",
+          "name": "Benjamin"
+        }
+      ],
       "mcp": {
         "binary": "shopify-pp-mcp",
         "transports": [
@@ -6569,6 +8100,10 @@
       "path": "library/media-and-entertainment/skool",
       "printer": "quoxientzero",
       "printer_name": "Zain Haseeb",
+      "creator": {
+        "handle": "quoxientzero",
+        "name": "Zain Haseeb"
+      },
       "mcp": {
         "binary": "skool-pp-mcp",
         "transports": [
@@ -6595,6 +8130,10 @@
       "path": "library/productivity/slack",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
       "mcp": {
         "binary": "slack-pp-mcp",
         "transports": [
@@ -6651,6 +8190,10 @@
       "path": "library/commerce/slickdeals",
       "printer": "beetz12",
       "printer_name": "David He",
+      "creator": {
+        "handle": "beetz12",
+        "name": "David He"
+      },
       "mcp": {
         "binary": "slickdeals-pp-mcp",
         "transports": [
@@ -6694,6 +8237,10 @@
       "path": "library/sales-and-crm/smartlead",
       "printer": "bossriceshark",
       "printer_name": "bossriceshark",
+      "creator": {
+        "handle": "bossriceshark",
+        "name": "bossriceshark"
+      },
       "mcp": {
         "binary": "smartlead-pp-mcp",
         "transports": [
@@ -6747,6 +8294,10 @@
       "path": "library/travel/sncf-connect",
       "printer": "jmbernabotto",
       "printer_name": "jmbernabotto",
+      "creator": {
+        "handle": "jmbernabotto",
+        "name": "jmbernabotto"
+      },
       "mcp": {
         "binary": "sncf-connect-pp-mcp",
         "transports": [
@@ -6815,6 +8366,10 @@
       "path": "library/media-and-entertainment/spotify",
       "printer": "rob-coco",
       "printer_name": "Rob Zehner",
+      "creator": {
+        "handle": "rob-coco",
+        "name": "Rob Zehner"
+      },
       "mcp": {
         "binary": "spotify-pp-mcp",
         "transports": [
@@ -6847,8 +8402,12 @@
         "Use site, website, pages, and store-pages aliases over the generated Commerce API website profile and store pages endpoints."
       ],
       "path": "library/commerce/squarespace",
-      "printer": "zayd",
+      "printer": "zaydiscold",
       "printer_name": "Zayd",
+      "creator": {
+        "handle": "zaydiscold",
+        "name": "Zayd"
+      },
       "mcp": {
         "binary": "squarespace-pp-mcp",
         "transports": [
@@ -6912,6 +8471,10 @@
       "path": "library/media-and-entertainment/steam-web",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "steam-web-pp-mcp",
         "transports": [
@@ -6965,6 +8528,10 @@
       "path": "library/productivity/strava",
       "printer": "azaaron",
       "printer_name": "azaaron",
+      "creator": {
+        "handle": "azaaron",
+        "name": "azaaron"
+      },
       "mcp": {
         "binary": "strava-pp-mcp",
         "transports": [
@@ -7017,6 +8584,10 @@
       "path": "library/payments/stripe",
       "printer": "crodorg",
       "printer_name": "Chris Rodriguez",
+      "creator": {
+        "handle": "crodorg",
+        "name": "Chris Rodriguez"
+      },
       "mcp": {
         "binary": "stripe-pp-mcp",
         "transports": [
@@ -7069,6 +8640,10 @@
       "path": "library/media-and-entertainment/substack",
       "printer": "chirantan",
       "printer_name": "Chirantan Rajhans",
+      "creator": {
+        "handle": "chirantan",
+        "name": "Chirantan Rajhans"
+      },
       "mcp": {
         "binary": "substack-pp-mcp",
         "transports": [
@@ -7119,7 +8694,11 @@
       ],
       "path": "library/media-and-entertainment/substack-creator",
       "printer": "JPresting",
-      "printer_name": "JimPresting"
+      "printer_name": "JimPresting",
+      "creator": {
+        "handle": "JPresting",
+        "name": "JimPresting"
+      }
     },
     {
       "name": "suno",
@@ -7165,6 +8744,10 @@
       "path": "library/media-and-entertainment/suno",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
       "mcp": {
         "binary": "suno-pp-mcp",
         "transports": [
@@ -7217,6 +8800,10 @@
       "path": "library/developer-tools/supabase",
       "printer": "giacaglia",
       "printer_name": "Giuliano Giacaglia",
+      "creator": {
+        "handle": "giacaglia",
+        "name": "Giuliano Giacaglia"
+      },
       "mcp": {
         "binary": "supabase-pp-mcp",
         "transports": [
@@ -7231,6 +8818,43 @@
         ],
         "mcp_ready": "full",
         "spec_format": "openapi3"
+      }
+    },
+    {
+      "name": "superhuman",
+      "category": "productivity",
+      "api": "Superhuman",
+      "description": "The Superhuman CLI that doesn't log you out, with a local inbox, agent-native I/O, and triage rules the web app...",
+      "search_terms": [
+        "superhuman",
+        "superhuman-pp-cli",
+        "Workflow compound commands",
+        "workflow",
+        "Compound commands that combine multiple API operations into one verb (see `workflow --help`).",
+        "Capability discovery via `which`",
+        "which",
+        "Resolve a natural-language capability query to the best matching command from this CLI's curated feature index."
+      ],
+      "path": "library/productivity/superhuman",
+      "printer": "mvanhorn",
+      "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
+      "mcp": {
+        "binary": "superhuman-pp-mcp",
+        "transports": [
+          "stdio"
+        ],
+        "tool_count": 11,
+        "public_tool_count": 0,
+        "auth_type": "bearer_token",
+        "env_vars": [
+          "SUPERHUMAN_JWT"
+        ],
+        "mcp_ready": "full",
+        "spec_format": "internal"
       }
     },
     {
@@ -7287,6 +8911,10 @@
       "path": "library/ai/surgegraph",
       "printer": "ng-plentisoft",
       "printer_name": "SurgeGraph Team",
+      "creator": {
+        "handle": "ng-plentisoft",
+        "name": "SurgeGraph Team"
+      },
       "mcp": {
         "binary": "surgegraph-facade-pp-mcp",
         "transports": [
@@ -7328,6 +8956,10 @@
       "path": "library/food-and-dining/table-reservation-goat",
       "printer": "pejmanjohn",
       "printer_name": "Pejman Pour-Moezzi",
+      "creator": {
+        "handle": "pejmanjohn",
+        "name": "Pejman Pour-Moezzi"
+      },
       "mcp": {
         "binary": "table-reservation-goat-pp-mcp",
         "transports": [
@@ -7374,6 +9006,10 @@
       "path": "library/productivity/techmeme",
       "printer": "davemorin",
       "printer_name": "Dave Morin",
+      "creator": {
+        "handle": "davemorin",
+        "name": "Dave Morin"
+      },
       "mcp": {
         "binary": "techmeme-pp-mcp",
         "transports": [
@@ -7423,6 +9059,16 @@
       "path": "library/media-and-entertainment/tella",
       "printer": "gregce",
       "printer_name": "Greg Ceccarelli",
+      "creator": {
+        "handle": "gregce",
+        "name": "Greg Ceccarelli"
+      },
+      "contributors": [
+        {
+          "handle": "cathrynlavery",
+          "name": "Cathryn Lavery"
+        }
+      ],
       "mcp": {
         "binary": "tella-pp-mcp",
         "transports": [
@@ -7447,50 +9093,20 @@
       "search_terms": [
         "tenderned",
         "tenderned-pp-cli",
-        "Dutch public-tender CLI with offline search, document corpus, and the sub-threshold long tail TED never sees.",
-        "Buyer dossier",
-        "Full profile for one contracting authority: spending cadence, top CPVs, top procedures, active vs awarded vs cancelled counts over a window.",
-        "Sub-threshold lead finder",
-        "leads",
-        "Filter notices to national-only AND below an estimated-value cap AND inside CPV stripes — the long-tail tenders that EU TED never sees.",
-        "Closing-deadline view",
-        "deadline",
-        "Lists notices closing within N days, grouped by day, with countdown plus buyer plus procedure filters.",
-        "Watch saved query",
-        "watch",
-        "Persist a filter set; watch run returns only NEW notices since the cursor's last advance.",
-        "CPV-drift over time",
-        "cpv-drift",
-        "Year-by-year top-CPV table for one buyer or NUTS region; shows whether a buyer's purchasing mix is shifting.",
-        "TED cross-reference",
-        "ted-link",
-        "Extracts the canonical TED publication number from the eForms XML, prints it plus the TED URL.",
-        "Tender-thread reconcile",
-        "thread reconcile",
-        "Walks PIN to CN to CAN to Modification chains for one buyer; flags orphan PINs, orphan CNs, and unresolved modifications.",
-        "Buyer top-N aggregation",
-        "buyers top",
-        "Top contracting authorities by tender count for a CPV plus NUTS plus date slice.",
-        "Document grep",
-        "docs grep",
-        "Streams documents from matching notices, runs a regex against PDF and Word text, prints pub_id, doc_id, line hits.",
-        "Weekly notice velocity",
-        "velocity",
-        "Weekly publication-count trend over the local snapshot; spot heating or cooling markets per CPV or buyer.",
-        "Buyer concentration (HHI)",
-        "concentration",
-        "Herfindahl-Hirschman index of award concentration for a CPV plus NUTS slice; tells you whether a market is dominated by one buyer or fragmented.",
-        "Deadline-heat calendar",
-        "deadline-heat",
-        "Ranked calendar of expiring notices weighted by urgency times estimated value; daily prioritized view of what needs attention."
+        "Dutch public-tender CLI with offline search, document corpus, and the sub-threshold long tail TED never sees."
       ],
       "path": "library/sales-and-crm/tenderned",
       "printer": "markvandeven",
       "printer_name": "markvandeven",
+      "creator": {
+        "handle": "markvandeven",
+        "name": "markvandeven"
+      },
       "mcp": {
         "binary": "tenderned-pp-mcp",
         "transports": [
-          "stdio"
+          "stdio",
+          "http"
         ],
         "tool_count": 7,
         "public_tool_count": 7,
@@ -7536,6 +9152,16 @@
       "path": "library/devices/tesla",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
+      "contributors": [
+        {
+          "handle": "ameshalexk",
+          "name": "Amesh Alex Kuruvilla"
+        }
+      ],
       "mcp": {
         "binary": "tesla-pp-mcp",
         "transports": [
@@ -7591,6 +9217,10 @@
       "path": "library/media-and-entertainment/ticketmaster",
       "printer": "omarshahine",
       "printer_name": "Omar Shahine",
+      "creator": {
+        "handle": "omarshahine",
+        "name": "Omar Shahine"
+      },
       "mcp": {
         "binary": "ticketmaster-pp-mcp",
         "transports": [
@@ -7629,6 +9259,16 @@
       "path": "library/commerce/tiktok-shop",
       "printer": "cathrynlavery",
       "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathrynlavery",
+        "name": "Cathryn Lavery"
+      },
+      "contributors": [
+        {
+          "handle": "mvanhorn",
+          "name": "Matt Van Horn"
+        }
+      ],
       "mcp": {
         "binary": "tiktok-shop-pp-mcp",
         "transports": [
@@ -7689,6 +9329,10 @@
       "path": "library/marketing/trendhunter",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
       "mcp": {
         "binary": "trendhunter-pp-mcp",
         "transports": [
@@ -7740,6 +9384,10 @@
       "path": "library/developer-tools/trigger-dev",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
       "mcp": {
         "binary": "trigger-dev-pp-mcp",
         "transports": [
@@ -7805,6 +9453,10 @@
       "path": "library/marketing/trustpilot",
       "printer": "mvanhorn",
       "printer_name": "Matt Van Horn",
+      "creator": {
+        "handle": "mvanhorn",
+        "name": "Matt Van Horn"
+      },
       "mcp": {
         "binary": "trustpilot-pp-mcp",
         "transports": [
@@ -7867,6 +9519,10 @@
       "path": "library/social-and-messaging/twilio",
       "printer": "CleverAI-ZH",
       "printer_name": "Stephan Stoeber",
+      "creator": {
+        "handle": "CleverAI-ZH",
+        "name": "Stephan Stoeber"
+      },
       "mcp": {
         "binary": "twilio-pp-mcp",
         "transports": [
@@ -7881,6 +9537,44 @@
         ],
         "mcp_ready": "full",
         "spec_format": "openapi3"
+      }
+    },
+    {
+      "name": "ucp",
+      "category": "commerce",
+      "api": "UCP",
+      "description": "A Go CLI for Google's Universal Commerce Protocol — talk to UCP merchants over REST or MCP",
+      "search_terms": [
+        "ucp",
+        "ucp-pp-cli",
+        "A Go CLI for Google's Universal Commerce Protocol — talk to UCP merchants over REST or MCP, search across them in parallel, build carts, and prep checkout drafts that an AP2 CLI can authorize.",
+        "UCP merchant manifest validator",
+        "check",
+        "Fetch `/.well-known/ucp` for any domain and return a graded report covering schema validity, advertised transports, and capability coverage — works against any merchant publishing a UCP manifest, including MCP-only Shopify-hosted stores.",
+        "Bundled pure-Go mock UCP merchant",
+        "mock serve",
+        "Spawn a UCP-compliant reference merchant locally (pure-Go, no external runtime) so `ucp check`, `search`, `cart`, and `checkout prep` flows work end-to-end without a third-party UCP merchant or extra language toolchains."
+      ],
+      "path": "library/commerce/ucp",
+      "printer": "beetz12",
+      "printer_name": "david",
+      "creator": {
+        "handle": "beetz12",
+        "name": "david"
+      },
+      "mcp": {
+        "binary": "ucp-pp-mcp",
+        "transports": [
+          "stdio",
+          "http"
+        ],
+        "tool_count": 1,
+        "public_tool_count": 0,
+        "auth_type": "bearer_token",
+        "env_vars": [
+          "API_TOKEN"
+        ],
+        "mcp_ready": "full"
       }
     },
     {
@@ -7917,6 +9611,10 @@
       "path": "library/other/ufo-goat",
       "printer": "davemorin",
       "printer_name": "Dave Morin",
+      "creator": {
+        "handle": "davemorin",
+        "name": "Dave Morin"
+      },
       "mcp": {
         "binary": "ufo-goat-pp-mcp",
         "transports": [
@@ -7968,6 +9666,10 @@
       "path": "library/other/usgs-earthquakes",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "usgs-earthquakes-pp-mcp",
         "transports": [
@@ -8013,6 +9715,10 @@
       "path": "library/developer-tools/uspto-tsdr",
       "printer": "H179922",
       "printer_name": "H179922",
+      "creator": {
+        "handle": "H179922",
+        "name": "H179922"
+      },
       "mcp": {
         "binary": "uspto-tsdr-pp-mcp",
         "transports": [
@@ -8054,6 +9760,10 @@
       "path": "library/travel/visit-detroit-blog",
       "printer": "stanrails",
       "printer_name": "stanrails",
+      "creator": {
+        "handle": "stanrails",
+        "name": "stanrails"
+      },
       "mcp": {
         "binary": "visit-detroit-blog-pp-mcp",
         "transports": [
@@ -8115,6 +9825,10 @@
       "path": "library/travel/wanderlust-goat",
       "printer": "jheitzeb",
       "printer_name": "Joe Heitzeberg",
+      "creator": {
+        "handle": "jheitzeb",
+        "name": "Joe Heitzeberg"
+      },
       "mcp": {
         "binary": "wanderlust-goat-pp-mcp",
         "transports": [
@@ -8129,6 +9843,58 @@
       }
     },
     {
+      "name": "wavespeed",
+      "category": "ai",
+      "api": "WaveSpeed",
+      "description": "Docs-derived OpenAPI spec for WaveSpeed AI's REST API.",
+      "search_terms": [
+        "wavespeed",
+        "wavespeed-pp-cli",
+        "Docs-derived OpenAPI spec for WaveSpeed AI's REST API.",
+        "API key from WaveSpeed access key settings",
+        "Dynamic model runner",
+        "run",
+        "Submit WaveSpeed model runs with prompt shorthand, JSON input merging, schema help, price estimates, waiting, downloads, aliases, and local media file upload coercion.",
+        "Dynamic model schema help",
+        "schema",
+        "Fetch the live WaveSpeed model catalog and print api_schema.api_schemas[0].request_schema for a model or project alias.",
+        "Media upload helper",
+        "upload",
+        "Upload local image, video, or audio files to WaveSpeed media storage for use as model input URLs.",
+        "Output downloader",
+        "download",
+        "Download generated output URLs with directory, exact-path, or templated-path destinations.",
+        "Model price estimate",
+        "price",
+        "Estimate WaveSpeed model pricing with the same input syntax used by run, without submitting a prediction.",
+        "Project aliases",
+        "aliases",
+        "Read wavespeed.json aliases, default model, and output directory settings for repeatable local workflows."
+      ],
+      "path": "library/ai/wavespeed",
+      "printer": "cathrynlavery",
+      "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathrynlavery",
+        "name": "Cathryn Lavery"
+      },
+      "mcp": {
+        "binary": "wavespeed-pp-mcp",
+        "transports": [
+          "stdio",
+          "http"
+        ],
+        "tool_count": 9,
+        "public_tool_count": 0,
+        "auth_type": "api_key",
+        "env_vars": [
+          "WAVESPEED_API_KEY"
+        ],
+        "mcp_ready": "full",
+        "spec_format": "openapi3"
+      }
+    },
+    {
       "name": "weather-goat",
       "category": "other",
       "api": "Open-Meteo + NWS",
@@ -8140,6 +9906,10 @@
       "path": "library/other/weather-goat",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "weather-goat-pp-mcp",
         "transports": [
@@ -8193,6 +9963,10 @@
       "path": "library/devices/whoop",
       "printer": "gregvanhorn",
       "printer_name": "Greg Van Horn",
+      "creator": {
+        "handle": "gregvanhorn",
+        "name": "Greg Van Horn"
+      },
       "mcp": {
         "binary": "whoop-pp-mcp",
         "transports": [
@@ -8226,6 +10000,10 @@
       "path": "library/media-and-entertainment/wikipedia",
       "printer": "hnshah",
       "printer_name": "Hiten Shah",
+      "creator": {
+        "handle": "hnshah",
+        "name": "Hiten Shah"
+      },
       "mcp": {
         "binary": "wikipedia-pp-mcp",
         "transports": [
@@ -8237,6 +10015,42 @@
         "env_vars": [],
         "mcp_ready": "full",
         "spec_format": "openapi3"
+      }
+    },
+    {
+      "name": "wolt",
+      "category": "food-and-dining",
+      "api": "Wolt",
+      "description": "Browse-only Wolt consumer CLI.",
+      "search_terms": [
+        "wolt",
+        "wolt-pp-cli",
+        "Browse Wolt food delivery from the terminal: cities, nearby venues, menus, prices, ETAs, and cross-venue comparisons.",
+        "Menu browsing with prices",
+        "menu show",
+        "Full venue menu: categories + items + prices + dietary preferences + availability. Discovered via the SSR-embedded React Query state behind the Wolt SPA.",
+        "Menu item search with price cap",
+        "menu search",
+        "Substring search within a venue's menu (name + description), sorted cheapest first, with --max-price filter in cents.",
+        "What's open right now and fast",
+        "venues-now",
+        "Filter nearby venues by open status + ETA cap + cuisine tag in one structured call. Replaces three SPA card-clicks.",
+        "Cross-venue comparison",
+        "venues-compare",
+        "Fan-out per-venue dynamic snapshots and join open status + next-close + delivery configs side by side.",
+        "Cuisine bottleneck",
+        "cuisine-bottleneck",
+        "Which cuisines have the longest average ETA right now near a coordinate — aggregates across nearby venues.",
+        "Order tracking by share link",
+        "track",
+        "Parse a Wolt order share URL and extract the order id. Stub — live JSON tracking endpoint not yet reverse-engineered."
+      ],
+      "path": "library/food-and-dining/wolt",
+      "printer": "Amit-Tabibi",
+      "printer_name": "Amit",
+      "creator": {
+        "handle": "Amit-Tabibi",
+        "name": "Amit"
       }
     },
     {
@@ -8259,6 +10073,10 @@
       "path": "library/social-and-messaging/x-twitter",
       "printer": "cathrynlavery",
       "printer_name": "Cathryn Lavery",
+      "creator": {
+        "handle": "cathrynlavery",
+        "name": "Cathryn Lavery"
+      },
       "mcp": {
         "binary": "x-twitter-pp-mcp",
         "transports": [
@@ -8281,18 +10099,55 @@
       "description": "Quotes, charts, fundamentals, options chains, and a local portfolio/watchlist tracker against Yahoo Finance — no API key, with Chrome-session fallback for rate-limited IPs",
       "search_terms": [
         "yahoo-finance",
-        "yahoo-finance-pp-cli"
+        "Yahoo Finance",
+        "yahoo-finance-pp-cli",
+        "Every Yahoo Finance endpoint plus a SQLite portfolio, covered-call screener, and Chrome-cookie fallback the libraries don't ship.",
+        "Portfolio performance tracker",
+        "portfolio perf",
+        "Track YTD / 1Y / all-time returns on your holdings with cost basis, dividends, and current price baked in.",
+        "Morning digest across watchlist",
+        "digest",
+        "One command: overnight news + biggest movers + earnings today + ex-div dates for everything on your watchlist.",
+        "Dividend income + yield-on-cost",
+        "portfolio dividends",
+        "See total dividend income for the year, per-holding breakdown, and yield on cost.",
+        "Options moneyness + DTE filter",
+        "options-chain",
+        "Filter an options chain to ATM/OTM/ITM contracts within a days-to-expiration window.",
+        "Local SQL screener over synced fundamentals",
+        "screen-local",
+        "Run arbitrary P/E, P/B, yield, margin, and growth filters against the data you've synced locally.",
+        "Chrome cookie import fallback",
+        "auth login --chrome",
+        "Import your live Chrome session cookies when Yahoo's crumb handshake is blocked from your IP.",
+        "Insider net-buying signal screener",
+        "insiders-net-buying",
+        "Surface companies where insiders are net buyers in the last N days, filtered to your watchlist.",
+        "Total-return comparator",
+        "compare",
+        "Multi-symbol price-plus-dividend total return ranked over a range.",
+        "Covered-call screener over holdings",
+        "options-covered-calls",
+        "Scan your holdings for covered-call candidates by annualized yield and DTE.",
+        "Watchlist correlation matrix",
+        "watchlist correlate",
+        "Pairwise Pearson correlation across the symbols in a named watchlist over a date range."
       ],
       "path": "library/commerce/yahoo-finance",
       "printer": "tmchow",
       "printer_name": "Trevin Chow",
+      "creator": {
+        "handle": "tmchow",
+        "name": "Trevin Chow"
+      },
       "mcp": {
         "binary": "yahoo-finance-pp-mcp",
         "transports": [
-          "stdio"
+          "stdio",
+          "http"
         ],
         "tool_count": 11,
-        "public_tool_count": 0,
+        "public_tool_count": 11,
         "auth_type": "none",
         "env_vars": [],
         "mcp_ready": "full",
@@ -8330,6 +10185,10 @@
       "path": "library/media-and-entertainment/youtube",
       "printer": "justinwfu",
       "printer_name": "Justin",
+      "creator": {
+        "handle": "justinwfu",
+        "name": "Justin"
+      },
       "mcp": {
         "binary": "youtube-pp-mcp",
         "transports": [
@@ -8343,6 +10202,64 @@
         ],
         "mcp_ready": "full",
         "spec_format": "openapi3"
+      }
+    },
+    {
+      "name": "zoho-expense",
+      "category": "productivity",
+      "api": "Zoho Expense",
+      "description": "Upload receipts, auto-tag expenses from learned merchant memory",
+      "search_terms": [
+        "zoho-expense",
+        "Zoho Expense",
+        "zoho-expense-pp-cli",
+        "Upload receipts, tag expenses, and bundle monthly reports on Zoho Expense from the terminal",
+        "Invoice batch ingest",
+        "invoice ingest",
+        "Batch upload a folder of invoices to Zoho Expense, SHA256-dedup against the local store, poll autoscan in parallel, and auto-tag from learned merchant memory — the headline workflow for AI agents that ingest invoices from email.",
+        "Merchant memory",
+        "merchant list",
+        "Build a local merchant→category/project/tag mapping from sync history; pre-fill tags on first sight of a new merchant.",
+        "Merchant mapping training",
+        "merchant map",
+        "Train the local merchant→category mapping for future auto-tag (one merchant at a time, or bulk from a CSV).",
+        "Receipt hash gate",
+        "receipt upload",
+        "SHA256-hash incoming receipts at upload, refuse duplicates (use --force to override).",
+        "Monthly close",
+        "close",
+        "Bundle a month's unreported expenses into an expense report in one shot — flags still-processing autoscans, flags untagged items, creates the report, attaches, optionally submits.",
+        "GST CGST/SGST split",
+        "gst-split",
+        "India-specific: parse an expense's tax_id and line items, compute CGST/SGST (intra-state) or IGST (inter-state) shares, emit the breakdown or update the expense.",
+        "Untagged expense audit",
+        "expense-untagged",
+        "List expenses missing category_id or project_id; `--auto-fix` applies the merchant→tag memory map and PUTs back to Zoho."
+      ],
+      "path": "library/productivity/zoho-expense",
+      "printer": "amitav13",
+      "printer_name": "Amitav Khandelwal",
+      "creator": {
+        "handle": "amitav13",
+        "name": "Amitav Khandelwal"
+      },
+      "mcp": {
+        "binary": "zoho-expense-pp-mcp",
+        "transports": [
+          "stdio",
+          "http"
+        ],
+        "tool_count": 70,
+        "public_tool_count": 0,
+        "auth_type": "oauth2",
+        "env_vars": [
+          "ZOHO_EXPENSE_CLIENT_ID",
+          "ZOHO_EXPENSE_CLIENT_SECRET",
+          "ZOHO_EXPENSE_REFRESH_TOKEN",
+          "ZOHO_EXPENSE_ORGANIZATION_ID"
+        ],
+        "mcp_ready": "full",
+        "spec_format": "internal"
       }
     },
     {
@@ -8399,6 +10316,10 @@
       "path": "library/productivity/zoom",
       "printer": "Holajack",
       "printer_name": "Jacken",
+      "creator": {
+        "handle": "Holajack",
+        "name": "Jacken"
+      },
       "mcp": {
         "binary": "zoom-pp-mcp",
         "transports": [
